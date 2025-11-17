@@ -2,12 +2,10 @@ package com.example.desafiohogwarts.ViewModel
 
 import Api.UserNetwork
 import android.util.Log
-import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.desafiohogwarts.MainActivity
 import com.example.desafiohogwarts.modelo.Casa
 import kotlinx.coroutines.launch
 import java.io.IOException
@@ -21,7 +19,7 @@ class ViewModelCasa: ViewModel() {
     fun cargarPorCasa(nombre: String) {
         viewModelScope.launch {
             try {
-                val resp = UserNetwork.retrofit.getCasaporNombre(nombre)
+                val resp = UserNetwork.retrofit.loginRespuesta(nombre)
                 Log.d("API", "Código: ${resp.code()}  Body: ${resp.body()}")
 
                 if (resp.isSuccessful && resp.body() != null) {

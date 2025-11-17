@@ -10,17 +10,17 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
 import com.example.desafiohogwarts.ViewModel.ViewModelCasa
-import com.example.desafiohogwarts.databinding.ActivityMainBinding
+import com.example.desafiohogwarts.databinding.ActivityCasaPuntosBinding
 import kotlinx.coroutines.launch
 import kotlin.getValue
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityMainBinding
+    private lateinit var binding: ActivityCasaPuntosBinding
     private val viewModel: ViewModelCasa by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        binding = ActivityMainBinding.inflate(layoutInflater)
+        binding = ActivityCasaPuntosBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->

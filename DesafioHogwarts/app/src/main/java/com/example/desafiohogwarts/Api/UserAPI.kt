@@ -1,6 +1,8 @@
 package Api
 
 import com.example.desafiohogwarts.modelo.Casa
+import modelo.Login_usuario
+import modelo.Usuario
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -13,35 +15,42 @@ interface UserAPI {
     /*
     Métodos usados para el acceso con ViewModel.
      */
-    data class Respuesta(val mensaje: String, val codigo: Int)
-    @GET("listado")
-    suspend fun getCasas(): Response<List<Casa>>
-    @GET("listado/{nombre}")
-    suspend fun getCasaporNombre(@Path("nombre") nombre: String): Response<Casa>
-/*
     @POST("login")
-    suspend fun login(@Body cred: UsuarioLogin): Response<Respuesta>
+    suspend fun login(@Body loginRequest: Login_usuario): Response<Usuario>
 
-    @GET("listado/{dni}")
-    suspend fun getUsuarioPorDni(@Path("dni") dni: String): Response<Usuario>
+    @GET("dios/casas")
+    suspend fun getCasas(): Response<List<Casa>>
 
-    @GET("encuestas")
-    suspend fun getEncuestas(): Response<List<Encuesta>>
+    @GET("/dios/casas/nombre/{nombre}")
+    suspend fun loginRespuesta(@Path("nombre") nombre: String):
+            Response<Casa>
 
-    @GET("encuestas/{id}")
-    suspend fun getEncuesta(@Path("id") id: Int): Response<Encuesta>
 
-    @POST("encuestas/registrar")
-    suspend fun addEncuesta(@Body encuestaData: Encuesta): Response<Respuesta>
 
-    @DELETE("encuestas/borrar/{id}")
-    suspend fun delEncuesta(@Path("id") id: Int): Response<Boolean>
+    /*
+        @POST("login")
+        suspend fun login(@Body cred: UsuarioLogin): Response<Respuesta>
 
-    @PUT("encuestas/modificar/{id}")
-    suspend fun updateEncuesta(
-        @Path("id") id: Int,
-        @Body encuestaData: Encuesta
-    ): Response<Boolean>
+        @GET("listado/{dni}")
+        suspend fun getUsuarioPorDni(@Path("dni") dni: String): Response<Usuario>
 
- */
+        @GET("encuestas")
+        suspend fun getEncuestas(): Response<List<Encuesta>>
+
+        @GET("encuestas/{id}")
+        suspend fun getEncuesta(@Path("id") id: Int): Response<Encuesta>
+
+        @POST("encuestas/registrar")
+        suspend fun addEncuesta(@Body encuestaData: Encuesta): Response<Respuesta>
+
+        @DELETE("encuestas/borrar/{id}")
+        suspend fun delEncuesta(@Path("id") id: Int): Response<Boolean>
+
+        @PUT("encuestas/modificar/{id}")
+        suspend fun updateEncuesta(
+            @Path("id") id: Int,
+            @Body encuestaData: Encuesta
+        ): Response<Boolean>
+
+     */
 }

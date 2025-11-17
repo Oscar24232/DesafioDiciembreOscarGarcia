@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/usuarios"
+        android:title="Gestion Usuarios"/>
+    <item android:id="@+id/casas"
+        android:title="Gestión de Casas"/>
+    <item android:id="@+id/asignaturas"
+        android:title="Gestión de Asignaturas"/>
+    <item android:id="@+id/ingredientes"
+        android:title="Gestion de Ingredientes"/>
+    <item android:id="@+id/pociones"
+        android:title="Gestión de pociones"/>
+    <item android:id="@+id/hechizos"
+        android:title="Gestión de hechizos"/>
+</menu>

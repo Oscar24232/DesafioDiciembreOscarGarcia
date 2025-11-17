@@ -2,7 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
+    android:id="@+id/casaPuntos"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
@@ -31,7 +31,7 @@
         app:srcCompat="@drawable/img_1" />
 
     <TextView
-        android:id="@+id/lbNombre"
+        android:id="@+id/lbUsuario"
         android:layout_width="72dp"
         android:layout_height="27dp"
         android:text="Nombre"
@@ -43,7 +43,7 @@
         app:layout_constraintVertical_bias="0.382" />
 
     <TextView
-        android:id="@+id/lbPuntuacion"
+        android:id="@+id/lbContraseña"
         android:layout_width="72dp"
         android:layout_height="31dp"
         android:text="Puntuacion"
