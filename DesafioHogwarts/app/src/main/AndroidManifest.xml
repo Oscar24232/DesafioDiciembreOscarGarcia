@@ -24,8 +24,13 @@
             android:exported="false">
 
         </activity>
+        <activity
+            android:name=".ActivityDios"
+            android:exported="false">
 
-        <activity android:name=".RegisActivity" android:exported="false">
+        </activity>
+
+        <activity android:name=".LoginActivity" android:exported="false">
 
         </activity>
 

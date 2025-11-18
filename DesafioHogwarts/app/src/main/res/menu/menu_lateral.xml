@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:id="@+id/usuarios"
+    <item android:id="@+id/gestionUsuarios"
         android:title="Gestion Usuarios"/>
-    <item android:id="@+id/casas"
+    <item android:id="@+id/gestionCasas"
         android:title="Gestión de Casas"/>
-    <item android:id="@+id/asignaturas"
+    <item android:id="@+id/gestionAsignaturasFragment"
         android:title="Gestión de Asignaturas"/>
-    <item android:id="@+id/ingredientes"
+    <item android:id="@+id/gestionIngredientes"
         android:title="Gestion de Ingredientes"/>
-    <item android:id="@+id/pociones"
+    <item android:id="@+id/gestionPociones"
         android:title="Gestión de pociones"/>
-    <item android:id="@+id/hechizos"
+    <item android:id="@+id/gestionHechizos"
         android:title="Gestión de hechizos"/>
 </menu>

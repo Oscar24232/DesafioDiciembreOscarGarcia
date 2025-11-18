@@ -16,7 +16,7 @@ interface UserAPI {
     Métodos usados para el acceso con ViewModel.
      */
     @POST("login")
-    suspend fun login(@Body loginRequest: Login_usuario): Response<Usuario>
+    suspend fun login(@Body dato: Login_usuario): Response<Usuario>
 
     @GET("dios/casas")
     suspend fun getCasas(): Response<List<Casa>>

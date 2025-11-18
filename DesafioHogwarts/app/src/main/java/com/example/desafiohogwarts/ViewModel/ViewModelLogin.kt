@@ -11,27 +11,26 @@ import modelo.Usuario
 
 class ViewModelLogin: ViewModel() {
     private val _usuario = MutableLiveData<Usuario?>()
-    val usuario: LiveData<Usuario?> = _usuario
+    val usuario: LiveData<Usuario?> get() = _usuario
 
     private val _error = MutableLiveData<String?>()
-    val error: LiveData<String?> = _error
+    val error: LiveData<String?> get() = _error
 
-    fun login(email: String, contraseña: String) {
+    fun login(email: String, pass: String) {
         viewModelScope.launch {
-
             try {
-                val login = Login_usuario(email, contraseña)
-                val resp = UserNetwork.retrofit.login(login)
+                val resp = UserNetwork.retrofit.login(
+                    Login_usuario(email, pass)
+                )
 
                 if (resp.isSuccessful && resp.body() != null) {
-                    _usuario.postValue(resp.body())
+                    _usuario.value = resp.body()
                 } else {
-                    _error.postValue("Email o contraseña incorrectos")
+                    _error.value = "Credenciales incorrectas"
                 }
 
             } catch (e: Exception) {
-                e.printStackTrace()
-                _error.postValue("Error de conexión con el servidor")
+                _error.value = "Error de conexión"
             }
         }
     }

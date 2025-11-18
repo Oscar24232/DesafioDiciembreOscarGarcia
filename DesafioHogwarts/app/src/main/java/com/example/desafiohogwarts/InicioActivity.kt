@@ -24,7 +24,11 @@ class InicioActivity: AppCompatActivity() {
             insets
         }
         binding.btLogin.setOnClickListener {
-            val intent = Intent(this, RegisActivity::class.java)
+            val intent = Intent(this, LoginActivity::class.java)
+            startActivity(intent)
+        }
+        binding.btRegis.setOnClickListener {
+            val intent = Intent(this, ActivityDios::class.java)
             startActivity(intent)
         }
     }

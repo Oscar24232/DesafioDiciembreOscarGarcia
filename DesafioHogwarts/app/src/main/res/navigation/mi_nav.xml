@@ -1,6 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
              xmlns:app="http://schemas.android.com/apk/res-auto"
-             android:id="@+id/mi_nav">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mi_nav"
+    app:startDestination="@id/gestionUsuarios">
 
+    <fragment
+        android:id="@+id/gestionUsuarios"
+        android:name="com.example.desafiohogwarts.GestionUsuarios"
+        android:label="fragment_gestion_usuarios"
+        tools:layout="@layout/fragment_gestion_usuarios" />
+    <fragment
+        android:id="@+id/gestionAsignaturasFragment"
+        android:name="com.example.desafiohogwarts.GestionAsignaturasFragment"
+        android:label="fragment_gestion_asignaturas"
+        tools:layout="@layout/fragment_gestion_asignaturas" />
+    <fragment
+        android:id="@+id/gestionCasas"
+        android:name="com.example.desafiohogwarts.GestionCasas"
+        android:label="fragment_gestion_casas"
+        tools:layout="@layout/fragment_gestion_casas" />
+    <fragment
+        android:id="@+id/gestionIngredientes"
+        android:name="com.example.desafiohogwarts.GestionIngredientes"
+        android:label="fragment_gestion_ingredientes"
+        tools:layout="@layout/fragment_gestion_ingredientes" />
+    <fragment
+        android:id="@+id/gestionPociones"
+        android:name="com.example.desafiohogwarts.GestionPociones"
+        android:label="fragment_gestion_pociones"
+        tools:layout="@layout/fragment_gestion_pociones" />
+    <fragment
+        android:id="@+id/gestionHechizos"
+        android:name="com.example.desafiohogwarts.GestionHechizos"
+        android:label="fragment_gestion_hechizos"
+        tools:layout="@layout/fragment_gestion_hechizos" />
 </navigation>
