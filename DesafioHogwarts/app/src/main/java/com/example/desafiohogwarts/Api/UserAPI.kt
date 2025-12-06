@@ -1,7 +1,10 @@
 package Api
 
 import com.example.desafiohogwarts.modelo.Casa
-import modelo.Login_usuario
+import com.example.desafiohogwarts.modelo.CasaAsignada
+import com.example.desafiohogwarts.modelo.PreferenciasCasa
+import modelo.UsuarioLogin
+import modelo.Respuesta
 import modelo.Usuario
 import retrofit2.Response
 import retrofit2.http.*
@@ -15,8 +18,15 @@ interface UserAPI {
     /*
     Métodos usados para el acceso con ViewModel.
      */
+    //para dar el usuario completo
     @POST("login")
-    suspend fun login(@Body dato: Login_usuario): Response<Usuario>
+    suspend fun login(@Body login: UsuarioLogin): Response<Usuario>
+    @GET("usuarios/email/{email}")
+    suspend fun getUsuarioByEmail(
+        @Path("email", encoded = true) email: String
+    ): Response<Usuario>
+
+
 
     @GET("dios/casas")
     suspend fun getCasas(): Response<List<Casa>>
@@ -24,6 +34,24 @@ interface UserAPI {
     @GET("/dios/casas/nombre/{nombre}")
     suspend fun loginRespuesta(@Path("nombre") nombre: String):
             Response<Casa>
+    //preferencias de la casa para elegir el sombrero
+    @POST("sombrero/asignar")
+    suspend fun evaluarPreferencias(
+        @Body prefs: PreferenciasCasa
+    ): Response<CasaAsignada>
+
+    //insertar usuario
+    @POST("usuario/insertar")
+    suspend fun insertarUsuario(
+        @Body usuario: Usuario
+    ): Response<Respuesta>   // puedes devolver mensaje
+
+
+
+
+
+
+
 
 
 

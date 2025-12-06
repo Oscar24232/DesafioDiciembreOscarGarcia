@@ -30,22 +30,36 @@ class LoginActivity: AppCompatActivity() {
                     // LOGIN OK → ABRE HOME
                     viewModel.usuario.observe(this) { user ->
                         if (user != null) {
-                            Toast.makeText(this, "Login Correcto ${user.nombre}", Toast.LENGTH_SHORT).show()
-                            //meter aqui lo de los roles
-                            val intent = Intent(this, ActivityDios::class.java)
-                            intent.putExtra("usuario",user)
-                            startActivity(intent)
-                            finish()
+                            Toast.makeText(this,"Login Correcto ${user.nombre}",Toast.LENGTH_SHORT).show()
+                            // Llamamos para obtener el usuario COMPLETO con su rol
+                            viewModel.cargarUsuarioPorEmail(user.email)
+                            viewModel.usuarioCompleto.observe(this) { usuario ->
+                                if (usuario != null) {
+                                    when (usuario.rol) {
+                                        4 -> startActivity(Intent(this, ActivityAlumno::class.java))
+                                        3 -> startActivity(Intent(this, ActivityProfesor::class.java))
+                                        2 -> startActivity(Intent(this, ActivityAdmin::class.java))
+                                        1 -> startActivity(Intent(this, ActivityDios::class.java))
+                                    }
+                                    finish()
+                                }
+                            }
+
+
                         }
                     }
-
+                }
                     // ERRORES
                     viewModel.error.observe(this) { msg ->
                         msg?.let {
                             Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
                         }
                     }
-                }
+            }
+            binding.btVolver.setOnClickListener {
+                val intent = Intent(this, InicioActivity::class.java)
+                startActivity(intent)
+                finish()
             }
         }
 }

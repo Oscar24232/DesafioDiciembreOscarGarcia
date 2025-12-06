@@ -6,7 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
-import modelo.Login_usuario
+import modelo.UsuarioLogin
 import modelo.Usuario
 
 class ViewModelLogin: ViewModel() {
@@ -16,17 +16,22 @@ class ViewModelLogin: ViewModel() {
     private val _error = MutableLiveData<String?>()
     val error: LiveData<String?> get() = _error
 
+    private val _usuarioCompleto = MutableLiveData<Usuario?>()
+    val usuarioCompleto: LiveData<Usuario?> get() = _usuarioCompleto
+
+
+
     fun login(email: String, pass: String) {
         viewModelScope.launch {
             try {
                 val resp = UserNetwork.retrofit.login(
-                    Login_usuario(email, pass)
+                    UsuarioLogin(email, pass)
                 )
 
                 if (resp.isSuccessful && resp.body() != null) {
                     _usuario.value = resp.body()
                 } else {
-                    _error.value = "Credenciales incorrectas"
+                    _error.value = "Credenciales incorrectas (${resp.code()})"
                 }
 
             } catch (e: Exception) {
@@ -34,4 +39,25 @@ class ViewModelLogin: ViewModel() {
             }
         }
     }
+
+
+    fun cargarUsuarioPorEmail(email: String) {
+        viewModelScope.launch {
+            try {
+                val resp = UserNetwork.retrofit.getUsuarioByEmail(email)
+
+                if (resp.isSuccessful && resp.body() != null) {
+                    _usuarioCompleto.value = resp.body()
+                } else {
+                    _error.value = "No se encontró el usuario completo"
+                }
+
+            } catch (e: Exception) {
+                _error.value = "Error de conexión"
+            }
+        }
+    }
+
+
+
 }

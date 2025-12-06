@@ -17,8 +17,10 @@ class HogwartsDAOImpl:HogwartsDAO {
 
                 while (resultSet.next()) {
                     val casa = Casa(
+                        id_casa = resultSet.getInt("id_casa"),
                         nombre = resultSet.getString("nombre"),
                         puntuacion = resultSet.getInt("puntuacion"),
+                        num_alumnos = resultSet.getInt("num_alumnos")
                     )
                     casas.add(casa)
                 }
@@ -39,8 +41,10 @@ class HogwartsDAOImpl:HogwartsDAO {
 
             if (resultSet.next()) {
                 casa = Casa(
+                    id_casa = resultSet.getInt("id_casa"),
                     nombre = resultSet.getString("nombre"),
                     puntuacion = resultSet.getInt("puntuacion"),
+                    num_alumnos = resultSet.getInt("num_alumnos")
                 )
                 println("✅ [DAO] Casa encontrada: $casa")
             } else {
@@ -50,6 +54,7 @@ class HogwartsDAOImpl:HogwartsDAO {
 
         return casa
     }
+
 
 }
 

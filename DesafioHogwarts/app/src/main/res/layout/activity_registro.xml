@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/img_2"
+    android:padding="40dp"
+    tools:context=".RegistroActivity"
+    tools:visibility="visible">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <!-- TOOLBAR -->
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbarRegistro"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:visibility="visible">
+
+            <ImageView
+                android:id="@+id/btnAtras"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:padding="3dp"
+                android:src="@drawable/round_arrow_back_24" />
+        </androidx.appcompat.widget.Toolbar>
+
+        <!-- ICONO SOMBRERO -->
+        <ImageView
+            android:id="@+id/imgSombrero"
+            android:layout_width="98dp"
+            android:layout_height="98dp"
+            android:layout_marginBottom="6dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/img" />
+
+        <!-- TÍTULO -->
+
+        <!-- NOMBRE -->
+        <TextView
+            android:id="@+id/txtTitulo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            android:text="Sombrero Seleccionador"
+            android:textColor="#E8D29E"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/etNombre"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginBottom="8dp"
+            android:background="@android:drawable/edit_text"
+            android:hint="Nombre"
+            android:padding="8dp"
+            android:textSize="13sp" />
+
+        <!-- EMAIL -->
+        <EditText
+            android:id="@+id/etEmail"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginBottom="8dp"
+            android:background="@android:drawable/edit_text"
+            android:hint="Email"
+            android:inputType="textEmailAddress"
+            android:padding="8dp"
+            android:textSize="13sp" />
+
+        <!-- PASS -->
+        <EditText
+            android:id="@+id/etPass"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginBottom="12dp"
+            android:background="@android:drawable/edit_text"
+            android:hint="Contraseña"
+            android:inputType="textPassword"
+            android:padding="8dp"
+            android:textSize="13sp" />
+
+        <!-- ROLES -->
+        <TextView
+            android:id="@+id/txtRoles"
+            android:layout_width="139dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="6dp"
+            android:text="Selecciona tu rol:"
+            android:textColor="#E8D29E"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+        <RadioGroup
+            android:id="@+id/groupRoles"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/rbAlumno"
+                android:text="Alumno"
+                android:textColor="#FFFFFF"
+                android:textSize="13sp" />
+
+            <RadioButton
+                android:id="@+id/rbProfesor"
+                android:text="Profesor"
+                android:textColor="#FFFFFF"
+                android:textSize="13sp" />
+
+            <RadioButton
+                android:id="@+id/rbAdmin"
+                android:text="Admin"
+                android:textColor="#FFFFFF"
+                android:textSize="13sp" />
+        </RadioGroup>
+
+        <!-- PREFERENCIAS -->
+        <TextView
+            android:id="@+id/txtPrefs"
+            android:layout_width="213dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="6dp"
+            android:text="Preferencias de Casa:"
+            android:textColor="#E8D29E"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <!-- CASAS + SEEKBARS -->
+
+        <!-- BOTÓN -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="332dp"
+            android:orientation="vertical">
+
+            <!-- GENERADOR DE LÍNEA -->
+            <!-- 55dp → 45dp para que todo sea más pequeño -->
+
+            <!-- GRYFFINDOR -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:layout_marginBottom="4dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="53dp"
+                    android:layout_height="52dp"
+                    android:src="@drawable/img_6" />
+
+                <SeekBar
+                    android:id="@+id/seekGryffindor"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:max="5" />
+            </LinearLayout>
+
+            <!-- HUFFLEPUFF -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="76dp"
+                android:layout_marginBottom="4dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="53dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/img_3" />
+
+                <SeekBar
+                    android:id="@+id/seekHufflepuff"
+                    android:layout_width="400dp"
+                    android:layout_height="32dp"
+                    android:layout_weight="1"
+                    android:max="5" />
+            </LinearLayout>
+
+            <!-- RAVENCLAW -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="68dp"
+                android:layout_marginBottom="4dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="56dp"
+                    android:layout_height="51dp"
+                    android:src="@drawable/img_4" />
+
+                <SeekBar
+                    android:id="@+id/seekRavenclaw"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:max="5" />
+            </LinearLayout>
+
+            <!-- SLYTHERIN -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:layout_marginBottom="10dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="58dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/img_5" />
+
+                <SeekBar
+                    android:id="@+id/seekSlytherin"
+                    android:layout_width="400dp"
+                    android:layout_height="30dp"
+                    android:layout_weight="1"
+                    android:max="5" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btSombrero"
+            android:layout_width="436dp"
+            android:layout_height="55dp"
+            android:backgroundTint="@color/caja"
+            android:padding="10dp"
+            android:text="Enviar al Sombrero"
+            android:textColor="#FFEB3B"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+</ScrollView>

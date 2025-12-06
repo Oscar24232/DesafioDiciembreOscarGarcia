@@ -1,27 +1,100 @@
 package rutas
 
 
-import DAO.PersonaDAO
-import DAO.PersonaDAOImpl
-import com.example.DAO.EncuestaDAOImpl
+import DAO.UsuarioDAO
+import DAO.UsuarioDAOImpl
 import com.example.DAO.HogwartsDAO
 import com.example.DAO.HogwartsDAOImpl
-import com.example.modelo.Encuesta
-import com.example.modelo.Persona
+import com.example.DAO.SombreroDAO
+import com.example.DAO.SombreroDAOImpl
 import com.example.modelo.UsuarioLogin
 import io.ktor.http.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import modelo.PreferenciasCasa
 import modelo.Respuesta
 import modelo.Usuario
 
 
 fun Route.misRutas() {
-    val personaDAO: PersonaDAO = PersonaDAOImpl()
+    val personaDAO: UsuarioDAO = UsuarioDAOImpl()
     val hogwartsDao: HogwartsDAO = HogwartsDAOImpl()
+    val sombrero:SombreroDAO = SombreroDAOImpl()
+    val usuarioDAO: UsuarioDAO = UsuarioDAOImpl()
 
     // 🔹 LISTADO
+    route("/sombrero") {
+
+        post("/asignar") {
+            // Recibir preferencias desde Android
+            val prefs = call.receive<PreferenciasCasa>()
+            val preferencias= PreferenciasCasa( prefs.preferencias)
+
+            // Ejecutar la lógica del sombrero seleccionador
+            val idCasaAsignada = sombrero.asignarCasa(preferencias)
+
+            // Respuesta al cliente Android
+            call.respond(
+                HttpStatusCode.OK,
+                idCasaAsignada
+            )
+            println("idCasa: ${idCasaAsignada}")
+
+            //terminar sombrero
+                //ver si devuelve el log
+                // y terminar con el insert en la bbdd
+
+        }
+    }
+    post("/usuario/insertar") {
+
+        val usuario = call.receive<Usuario>()
+        print(usuario.nombre)
+        // Validar email repetido
+        if (usuarioDAO.existeEmail(usuario.email)) {
+            return@post call.respond(
+                HttpStatusCode.Conflict,
+                Respuesta("Este correo ya esta registrado", 1)
+            )
+        }
+        // Insertar usuario
+        val ok = usuarioDAO.insertar(usuario)
+
+        if (ok) {
+            call.respond(
+                HttpStatusCode.Created,
+                Respuesta("Usuario insertado correctamente", 0)
+            )
+        } else {
+            call.respond(
+                HttpStatusCode.InternalServerError,
+                Respuesta("Error insertado ", 2)
+            )
+        }
+    }
+    get("/usuarios/email/{email}") {
+
+        val email = call.parameters["email"]
+
+        if (email.isNullOrBlank()) {
+            call.respond(HttpStatusCode.BadRequest, "Falta email")
+            return@get
+        }
+
+        val usuario = usuarioDAO.getUsuarioByEmail(email)
+
+        if (usuario != null) {
+            call.respond(HttpStatusCode.OK, usuario)
+        } else {
+            call.respond(HttpStatusCode.NotFound, "Usuario no encontrado")
+        }
+    }
+
+
+
+
+
     //ver casas
     route("/listado") {
         get {
@@ -43,51 +116,21 @@ fun Route.misRutas() {
     // 🔹 LOGIN
     route("/login") {
         post {
-            val us = call.receive<UsuarioLogin>()
-            println("📩 Login recibido: dni=${us.dni}, clave=${us.clave}") // 👈 imprime lo que recibe
-            val persona = personaDAO.obtener(us.dni)
+            val datos = call.receive<UsuarioLogin>()
+            val usuario = usuarioDAO.login(datos.email, datos.contrasena)
 
-            if (persona == null || persona.clave != us.clave) {
-                return@post call.respond(
+            if (usuario == null) {
+                call.respond(
                     HttpStatusCode.Unauthorized,
-                    Respuesta("DNI o clave incorrectos", 1)
+                    Respuesta("Email o contraseña incorrectos", 1)
                 )
-            }
-
-            return@post call.respond(HttpStatusCode.OK, Respuesta("Inicio de sesión exitoso", 0))
-        }
-    }
-
-    // 🔹 REGISTRAR
-    route("/registrar") {
-        post {
-            val us = call.receive<Usuario>()
-
-            val existente = personaDAO.obtener(us.dni)
-            if (existente != null) {
-                return@post call.respond(
-                    HttpStatusCode.Conflict,
-                    Respuesta("Ya existe una persona con ese DNI", 1)
-                )
-            }
-
-            val insertado = personaDAO.insertar(
-                Persona(
-                    dni = us.dni,
-                    nombre = us.nombre,
-                    clave = us.clave,
-                    tfno = us.tfno,
-                    rol = us.rol
-                )
-            )
-
-            if (insertado) {
-                return@post call.respond(HttpStatusCode.Created, Respuesta("Usuario registrado correctamente", 0))
             } else {
-                return@post call.respond(HttpStatusCode.InternalServerError, Respuesta("Error al registrar usuario", 2))
+                call.respond(HttpStatusCode.OK, usuario)
             }
         }
     }
+
+
 
     // 🔹 BORRAR
     route("/borrar") {
@@ -103,60 +146,6 @@ fun Route.misRutas() {
             }
         }
     }
-
-    // 🔹 MODIFICAR
-    route("/modificar") {
-        put("{dni?}") {
-            val dni = call.parameters["dni"]
-                ?: return@put call.respondText("DNI vacío en la URL", status = HttpStatusCode.BadRequest)
-            val us = call.receive<Usuario>()
-
-            val existente = personaDAO.obtener(dni)
-            if (existente == null) {
-                return@put call.respond(HttpStatusCode.NotFound, Respuesta("No existe ninguna persona con DNI $dni", 1))
-            }
-
-            val actualizado = personaDAO.actualizar(
-                Persona(
-                    dni = dni,
-                    nombre = us.nombre,
-                    clave = us.clave,
-                    tfno = us.tfno,
-                    rol = us.rol
-                )
-            )
-
-            if (actualizado) {
-                return@put call.respond(HttpStatusCode.OK, Respuesta("Persona modificada correctamente", 0))
-            } else {
-                return@put call.respond(HttpStatusCode.InternalServerError, Respuesta("Error al modificar persona", 2))
-            }
-        }
-    }
-    //encuestas
-    val encuestaDAO = EncuestaDAOImpl()
-
-    route("/encuestas") {
-        get {
-            val lista = encuestaDAO.obtenerTodas()
-            call.respond(lista)
-        }
-    }
-    // 🔹 INSERTAR ENCUESTA
-    route("/encuestas/registrar") {
-        post {
-            val nuevaEncuesta = call.receive<Encuesta>()
-            println("🟢 Insertando encuesta: $nuevaEncuesta")
-
-            val ok = encuestaDAO.insertar(nuevaEncuesta)
-            if (ok) {
-                call.respond(HttpStatusCode.OK, Respuesta("Encuesta insertada correctamente", 0))
-            } else {
-                call.respond(HttpStatusCode.InternalServerError, Respuesta("Error al insertar encuesta", 1))
-            }
-        }
-    }
-
 
 }
 

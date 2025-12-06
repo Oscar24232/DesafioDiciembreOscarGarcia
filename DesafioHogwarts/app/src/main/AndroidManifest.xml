@@ -29,6 +29,26 @@
             android:exported="false">
 
         </activity>
+        <activity
+            android:name=".ActivityAlumno"
+            android:exported="false">
+
+        </activity>
+        <activity
+            android:name=".ActivityProfesor"
+            android:exported="false">
+
+        </activity>
+        <activity
+            android:name=".ActivityAdmin"
+            android:exported="false">
+
+        </activity>
+        <activity
+            android:name=".RegistroActivity"
+            android:exported="false">
+
+        </activity>
 
         <activity android:name=".LoginActivity" android:exported="false">
 

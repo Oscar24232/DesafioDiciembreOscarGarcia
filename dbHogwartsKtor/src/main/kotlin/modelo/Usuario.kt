@@ -3,4 +3,5 @@ package modelo
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class Usuario(val dni:String, val nombre:String, val clave:String, val tfno:String, val rol: String)
+data class Usuario(val nombre:String, val email:String, val contrasena:String, val foto:String,
+                   val id_casa: Int, val exp:Int, val nivel:Int, val estado:String, val rol: Int)

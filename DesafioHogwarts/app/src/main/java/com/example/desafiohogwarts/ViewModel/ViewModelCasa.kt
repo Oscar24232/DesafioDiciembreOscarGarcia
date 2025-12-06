@@ -16,6 +16,8 @@ class ViewModelCasa: ViewModel() {
     private val _casa = MutableLiveData<Casa>()
     val casa: LiveData<Casa> get() = _casa
 
+
+
     fun cargarPorCasa(nombre: String) {
         viewModelScope.launch {
             try {

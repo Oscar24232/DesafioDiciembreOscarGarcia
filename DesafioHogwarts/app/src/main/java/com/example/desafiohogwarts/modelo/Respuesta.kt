@@ -1,5 +1,6 @@
 package modelo
+
 import kotlinx.serialization.Serializable
+
 @Serializable
-class Login_usuario(val email: String, val contraseña: String) {
-}
+data class Respuesta(val message:String, val status:Int)

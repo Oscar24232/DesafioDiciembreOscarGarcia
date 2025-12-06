@@ -23,12 +23,13 @@ class InicioActivity: AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+
         binding.btLogin.setOnClickListener {
             val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
         }
         binding.btRegis.setOnClickListener {
-            val intent = Intent(this, ActivityDios::class.java)
+            val intent = Intent(this, RegistroActivity::class.java)
             startActivity(intent)
         }
     }

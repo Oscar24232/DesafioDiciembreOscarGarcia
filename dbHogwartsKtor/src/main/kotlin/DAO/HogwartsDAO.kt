@@ -7,4 +7,5 @@ import com.example.modelo.Persona
 interface HogwartsDAO {
     fun obtenerTodos(): List<Casa>
     fun obtener(nombre: String): Casa?
+
 }
