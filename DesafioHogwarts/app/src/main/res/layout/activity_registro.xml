@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/img_2"
+    android:background="@drawable/fondohogwart"
     android:padding="40dp"
     tools:context=".RegistroActivity"
     tools:visibility="visible">
@@ -37,7 +37,7 @@
             android:layout_height="98dp"
             android:layout_marginBottom="6dp"
             android:scaleType="centerInside"
-            android:src="@drawable/img" />
+            android:src="@drawable/logo" />
 
         <!-- TÍTULO -->
 
@@ -157,7 +157,7 @@
                 <ImageView
                     android:layout_width="53dp"
                     android:layout_height="52dp"
-                    android:src="@drawable/img_6" />
+                    android:src="@drawable/grifin2" />
 
                 <SeekBar
                     android:id="@+id/seekGryffindor"
@@ -178,7 +178,7 @@
                 <ImageView
                     android:layout_width="53dp"
                     android:layout_height="50dp"
-                    android:src="@drawable/img_3" />
+                    android:src="@drawable/huffle" />
 
                 <SeekBar
                     android:id="@+id/seekHufflepuff"
@@ -199,7 +199,7 @@
                 <ImageView
                     android:layout_width="56dp"
                     android:layout_height="51dp"
-                    android:src="@drawable/img_4" />
+                    android:src="@drawable/raven" />
 
                 <SeekBar
                     android:id="@+id/seekRavenclaw"
@@ -220,7 +220,7 @@
                 <ImageView
                     android:layout_width="58dp"
                     android:layout_height="50dp"
-                    android:src="@drawable/img_5" />
+                    android:src="@drawable/sly" />
 
                 <SeekBar
                     android:id="@+id/seekSlytherin"

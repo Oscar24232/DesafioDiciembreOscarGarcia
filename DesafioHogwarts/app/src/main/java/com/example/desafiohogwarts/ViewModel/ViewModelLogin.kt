@@ -1,6 +1,7 @@
 package com.example.desafiohogwarts.ViewModel
 
 import Api.UserNetwork
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -26,8 +27,9 @@ class ViewModelLogin: ViewModel() {
             try {
                 val resp = UserNetwork.retrofit.login(
                     UsuarioLogin(email, pass)
-                )
 
+                )
+                Log.d("LOGIN", "📡 Respuesta cargarUsuarioPorEmail: code=${resp.code()} body=${resp.body()}")
                 if (resp.isSuccessful && resp.body() != null) {
                     _usuario.value = resp.body()
                 } else {
@@ -35,7 +37,9 @@ class ViewModelLogin: ViewModel() {
                 }
 
             } catch (e: Exception) {
-                _error.value = "Error de conexión"
+                _error.value = "Error de conexión "
+                Log.e("LOGIN", " EXCEPCIÓN cargarUsuarioPorEmail", e)
+                _error.value = "Error de conexión: ${e.message}"
             }
         }
     }

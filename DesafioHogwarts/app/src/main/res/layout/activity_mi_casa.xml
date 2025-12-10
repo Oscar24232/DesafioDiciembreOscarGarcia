@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="20dp"
+    android:gravity="center_horizontal"
+    android:background="@drawable/comedorhogwart">
+
+    <!-- TÍTULO -->
+    <ImageView
+        android:id="@+id/btAtras"
+        android:layout_width="60dp"
+        android:layout_height="70dp"
+        android:layout_gravity="start"
+        app:srcCompat="@drawable/round_arrow_back_24" />
+
+    <TextView
+        android:id="@+id/tvTituloCasa"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Mi Casa"
+        android:textSize="28sp"
+        android:textStyle="bold"
+        android:textColor="#E8D29E"
+        android:layout_marginBottom="20dp"/>
+
+    <!-- IMAGEN DE LA CASA -->
+    <ImageView
+        android:id="@+id/ivEscudoCasa"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:src="@drawable/fondohogwart"
+        android:layout_marginBottom="20dp" />
+
+    <!-- NOMBRE CASA -->
+    <TextView
+        android:id="@+id/tvNombreCasa"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Gryffindor"
+        android:textColor="#FFEB3B"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="10dp" />
+
+    <!-- PUNTUACIÓN -->
+    <TextView
+        android:id="@+id/tvPuntosCasa"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Puntos: 0"
+        android:textColor="#E8D29E"
+        android:textSize="18sp"
+        android:layout_marginTop="10dp" />
+
+    <!-- ALUMNOS -->
+    <TextView
+        android:id="@+id/tvAlumnosCasa"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Miembros: 0"
+        android:textColor="#E8D29E"
+        android:textSize="18sp"
+        android:layout_marginTop="10dp" />
+</LinearLayout>
+

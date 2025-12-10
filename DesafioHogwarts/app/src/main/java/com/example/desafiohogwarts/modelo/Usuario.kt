@@ -3,8 +3,8 @@ package modelo
 import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 
-@kotlinx.serialization.Serializable
 data class Usuario(
+    val id: Int? = null,
     val nombre: String,
     val email: String,
     val contrasena: String,
@@ -14,4 +14,5 @@ data class Usuario(
     val nivel: Int,
     val estado: String,
     val rol: Int
-) : Serializable   //  ← AÑADE ESTO
+) : Serializable
+//en mi recycler ver los hechizos

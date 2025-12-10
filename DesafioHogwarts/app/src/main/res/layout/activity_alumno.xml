@@ -1,8 +1,133 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:background="@drawable/img_8"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@drawable/comedorhogwart"
+    android:padding="20dp">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center_horizontal">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <!-- FOTO DEL ALUMNO -->
+        <ImageView
+            android:id="@+id/imgAlumno"
+            android:layout_width="151dp"
+            android:layout_height="141dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/borde_dorado"
+            android:padding="5dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/logo" />
+
+        <!-- NOMBRE -->
+        <TextView
+            android:id="@+id/txtNombreAlumno"
+            android:layout_width="wrap_content"
+            android:layout_height="41dp"
+            android:layout_marginTop="20dp"
+            android:text="Nombre del alumno"
+            android:textColor="#FFEB3B"
+            android:textSize="22sp"
+            android:textStyle="bold" />
+
+        <!-- EMAIL -->
+        <TextView
+            android:id="@+id/txtEmailAlumno"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="email@hogwarts.com"
+            android:textColor="#E8D29E"
+            android:textSize="16sp"
+            android:layout_marginTop="20dp" />
+
+        <!-- CASA -->
+        <TextView
+            android:id="@+id/txtCasaAlumno"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Casa: Gryffindor"
+            android:textColor="#FFEB3B"
+            android:textSize="18sp"
+            android:layout_marginTop="20dp" />
+
+        <!-- NIVEL -->
+        <TextView
+            android:id="@+id/txtNivelAlumno"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Nivel: 1"
+            android:textColor="#FFEB3B"
+            android:textSize="18sp"
+            android:layout_marginTop="20dp" />
+
+        <!-- EXPERIENCIA -->
+        <TextView
+            android:id="@+id/txtExpAlumno"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Experiencia: 0"
+            android:textColor="#FFEB3B"
+            android:textSize="18sp"
+            android:layout_marginTop="20dp" />
+
+        <!-- ESTADO -->
+        <TextView
+            android:id="@+id/txtEstadoAlumno"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Estado: Activo"
+            android:textColor="#FFEB3B"
+            android:textSize="18sp"
+            android:layout_marginTop="20dp" />
+
+        <!-- BOTÓN CLASE DE POCIONES -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnClasePociones"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="CLASE DE POCIONES"
+            android:textColor="#000"
+            android:textSize="18sp"
+            android:backgroundTint="#E8D29E"
+            android:layout_marginTop="40dp"
+            android:enabled="false" />
+
+        <!-- BOTÓN CLASE DE HECHIZOS -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnClaseHechizos"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="CLASE DE HECHIZOS"
+            android:textColor="#000"
+            android:textSize="18sp"
+            android:backgroundTint="#E8D29E"
+            android:layout_marginTop="10dp"
+            android:enabled="false" />
+
+        <!-- BOTÓN PARA VER SU CASA -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnVerCasa"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="VER MI CASA"
+            android:textColor="#000"
+            android:textSize="18sp"
+            android:backgroundTint="#E8D29E"
+            android:layout_marginTop="40dp" />
+
+        <!-- BOTÓN CERRAR SESIÓN -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnLogoutAlumno"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="CERRAR SESION"
+            android:textColor="#000"
+            android:backgroundTint="#FF7777"
+            android:layout_marginTop="10dp" />
+
+    </LinearLayout>
+</ScrollView>

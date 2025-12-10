@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="110dp"
+    android:layout_margin="8dp"
+    android:clickable="true"
+    android:foreground="?attr/selectableItemBackground"
+    app:cardElevation="6dp"
+    app:cardCornerRadius="14dp"
+    app:strokeWidth="1dp"
+    app:strokeColor="#E8D29E"
+    android:backgroundTint="#1A1A1A">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:padding="12dp"
+        android:gravity="center_vertical">
+
+        <!-- IMAGEN DE LA CASA -->
+        <ImageView
+            android:id="@+id/imgCasa"
+            android:layout_width="64dp"
+            android:layout_height="57dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/fondohogwart" />
+
+        <!-- INFORMACIÓN DEL USUARIO -->
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="16dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <!-- NOMBRE DEL USUARIO -->
+            <TextView
+                android:id="@+id/txtNombreUsuario"
+                android:layout_width="219dp"
+                android:layout_height="wrap_content"
+                android:text="Nombre del Usuario"
+                android:textColor="#E8D29E"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <!-- CASA DEL USUARIO -->
+            <TextView
+                android:id="@+id/txtCasaUsuario"
+                android:layout_width="209dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="Gryffindor"
+                android:textColor="#CEB26C"
+                android:textSize="15sp" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+</com.google.android.material.card.MaterialCardView>

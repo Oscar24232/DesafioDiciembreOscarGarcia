@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/gestionUsuarios"
-        android:name="com.example.desafiohogwarts.GestionUsuarios"
+        android:name="com.example.desafiohogwarts.fragment.GestionUsuarios.GestionUsuarios"
         android:label="fragment_gestion_usuarios"
         tools:layout="@layout/fragment_gestion_usuarios" />
     <fragment

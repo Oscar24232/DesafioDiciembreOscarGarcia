@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="12dp"
+    android:background="#33000000"
+    android:layout_marginBottom="10dp"
+    android:layout_marginTop="10dp"
+    android:layout_marginHorizontal="8dp"
+    android:elevation="4dp">
+
+    <TextView
+        android:id="@+id/txtNombreHechizo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Nombre del hechizo"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textColor="#FFD700"
+        android:layout_marginBottom="4dp"/>
+
+    <TextView
+        android:id="@+id/txtDescHechizo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Descripción del hechizo..."
+        android:textSize="14sp"
+        android:textColor="#FFFFFF"
+        android:layout_marginBottom="6dp"/>
+
+    <TextView
+        android:id="@+id/txtPuntosHechizo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Puntos: 0"
+        android:textSize="14sp"
+        android:textColor="#FFEB3B"
+        android:layout_marginBottom="10dp"/>
+
+    <Button
+        android:id="@+id/btnAprender"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Aprender"
+        android:textColor="#FFD700"
+        android:background="#55000000"
+        android:padding="10dp"
+        android:layout_gravity="end"/>
+
+</LinearLayout>
+
+

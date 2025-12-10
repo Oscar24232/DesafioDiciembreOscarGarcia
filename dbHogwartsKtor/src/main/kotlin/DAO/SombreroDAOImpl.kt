@@ -1,8 +1,10 @@
 package com.example.DAO
 
-import com.example.modelo.ResultadoSombrero
+import Helpers.Database
+import com.example.modelo.Casa
 import modelo.CasaAsignadaResponse
 import modelo.PreferenciasCasa
+import kotlin.use
 
 class SombreroDAOImpl : SombreroDAO {
     var hogwartsCasas = HogwartsDAOImpl()
@@ -42,7 +44,7 @@ class SombreroDAOImpl : SombreroDAO {
             if (favoritas.size == 1) {
 
                 val nombre = favoritas.first()
-                val casa = hogwartsCasas.obtener(nombre)
+                val casa = obtener_sombrero(nombre)
 
                 return CasaAsignadaResponse(
                     casa?.id_casa ?: 1
@@ -51,10 +53,38 @@ class SombreroDAOImpl : SombreroDAO {
 
             // 7. Si hay EMPATE → random
             val randomNombre = favoritas.random()
-            val casaRandom = hogwartsCasas.obtener(randomNombre)
+            val casaRandom = obtener_sombrero(randomNombre)
 
             return CasaAsignadaResponse(
                 casaRandom?.id_casa ?: 1
             )
         }
+    //funcion del sombrero
+    override fun obtener_sombrero(nombre: String): Casa? {
+        val sql = "SELECT * FROM casas WHERE nombre = ?"
+        val connection = Database.getConnection()
+        var casa: Casa? = null
+
+        println("🟢 [DAO] Buscando casa con nombre: $nombre")
+
+        connection?.use {
+            val statement = it.prepareStatement(sql)
+            statement.setString(1, nombre)
+            val resultSet = statement.executeQuery()
+
+            if (resultSet.next()) {
+                casa = Casa(
+                    id_casa = resultSet.getInt("id_casa"),
+                    nombre = resultSet.getString("nombre"),
+                    puntuacion = resultSet.getInt("puntuacion"),
+                    num_alumnos = resultSet.getInt("num_alumnos")
+                )
+                println("✅ [DAO] Casa encontrada: $casa")
+            } else {
+                println("⚠️ [DAO] No se encontró la casa con nombre: $nombre")
+            }
+        }
+
+        return casa
+    }
     }

@@ -2,6 +2,7 @@ package Api
 
 import com.example.desafiohogwarts.modelo.Casa
 import com.example.desafiohogwarts.modelo.CasaAsignada
+import com.example.desafiohogwarts.modelo.Hechizo
 import com.example.desafiohogwarts.modelo.PreferenciasCasa
 import modelo.UsuarioLogin
 import modelo.Respuesta
@@ -21,10 +22,14 @@ interface UserAPI {
     //para dar el usuario completo
     @POST("login")
     suspend fun login(@Body login: UsuarioLogin): Response<Usuario>
-    @GET("usuarios/email/{email}")
+    @GET("usuario/email/{email}")
     suspend fun getUsuarioByEmail(
         @Path("email", encoded = true) email: String
     ): Response<Usuario>
+
+    //alumno-asignaturas
+    @GET("alumno/{id}/asignaturas")
+    suspend fun obtenerAsignaturasAlumno(@Path("id") idAlumno: Int?): Response<MutableList<Int>>
 
 
 
@@ -32,8 +37,11 @@ interface UserAPI {
     suspend fun getCasas(): Response<List<Casa>>
 
     @GET("/dios/casas/nombre/{nombre}")
-    suspend fun loginRespuesta(@Path("nombre") nombre: String):
+    suspend fun cargaPorCasas(@Path("nombre") nombre: String):
             Response<Casa>
+    @GET("/casas/{id}")
+    suspend fun obtenerCasa(@Path("id") idCasa: Int): Response<Casa>
+
     //preferencias de la casa para elegir el sombrero
     @POST("sombrero/asignar")
     suspend fun evaluarPreferencias(
@@ -45,6 +53,40 @@ interface UserAPI {
     suspend fun insertarUsuario(
         @Body usuario: Usuario
     ): Response<Respuesta>   // puedes devolver mensaje
+    //obtener todos los usuarios
+    @GET("usuario/all")
+    suspend fun getUsuarios(): Response<MutableList<Usuario>>
+
+    //actualizar usuarios
+    @PUT("usuario/actualizar")
+    suspend fun actualizarUsuario(
+        @Body usuario: Usuario
+    ): Response<Respuesta>
+
+    @DELETE("usuario/borrar/{email}")
+    suspend fun borrarUsuario(
+        @Path("email") email: String
+    ): Response<Respuesta>
+    //COMPROBAR ASIGNATURAS ALUMNO
+    @GET("alumno/{id}/tieneAsignatura/{idAsignatura}")
+    suspend fun tieneAsignatura(
+        @Path("id") idAlumno: Int?,
+        @Path("idAsignatura") idAsignatura: Int
+    ): Response<Map<String, Boolean>>
+    //HECHIZOS
+    @GET("hechizos")
+    suspend fun getHechizos(): Response<List<Hechizo>>
+
+    @POST("hechizos/aprender")
+    suspend fun aprenderHechizo(
+        @Body body: Map<String, Int>
+    ): Response<Respuesta>
+    @GET("hechizos/{id}/hechizosAprendidos")
+    suspend fun getHechizosAprendidos(
+        @Path("id") idAlumno: Int
+    ): Response<List<Int>>
+
+
 
 
 

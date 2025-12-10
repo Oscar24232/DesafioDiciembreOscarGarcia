@@ -1,8 +1,12 @@
 package rutas
 
 
+import AlumnoDAO
+import DAO.HechizosDAO
+import DAO.HechizosDAOImpl
 import DAO.UsuarioDAO
 import DAO.UsuarioDAOImpl
+import com.example.DAO.AlumnoDAOImpl
 import com.example.DAO.HogwartsDAO
 import com.example.DAO.HogwartsDAOImpl
 import com.example.DAO.SombreroDAO
@@ -20,8 +24,73 @@ import modelo.Usuario
 fun Route.misRutas() {
     val personaDAO: UsuarioDAO = UsuarioDAOImpl()
     val hogwartsDao: HogwartsDAO = HogwartsDAOImpl()
-    val sombrero:SombreroDAO = SombreroDAOImpl()
+    val sombrero: SombreroDAO = SombreroDAOImpl()
     val usuarioDAO: UsuarioDAO = UsuarioDAOImpl()
+    val alumnoAsignaturaDAO: AlumnoDAO = AlumnoDAOImpl()
+    val hechizosDAO: HechizosDAO= HechizosDAOImpl()
+
+    // LOGIN
+    route("/login") {
+        post {
+            val datos = call.receive<UsuarioLogin>()
+            val usuario = usuarioDAO.login(datos.email, datos.contrasena)
+
+            if (usuario == null) {
+                call.respond(
+                    HttpStatusCode.Unauthorized,
+                    Respuesta("Email o contraseña incorrectos", 1)
+                )
+            } else {
+                call.respond(HttpStatusCode.OK, usuario)
+            }
+        }
+    }
+    //alumno ver asignaturas y hechizos
+    route("/alumno") {
+        get("/{id}/tieneAsignatura/{idAsignatura}") {
+            val idAlumno = call.parameters["id"]?.toIntOrNull()
+                ?: return@get call.respond(HttpStatusCode.BadRequest, Respuesta("id inválido",1 ))
+            val idAsignatura = call.parameters["idAsignatura"]?.toIntOrNull()
+                ?: return@get call.respond(HttpStatusCode.BadRequest, Respuesta("id asignatura inválido",1 ))
+
+            val tiene = alumnoAsignaturaDAO.alumnoTieneAsignatura(idAlumno, idAsignatura)
+            call.respond(HttpStatusCode.OK, mapOf("tiene" to tiene))
+        }
+
+        get("/{id}/asignaturas") {
+            val idAlumno = call.parameters["id"]?.toIntOrNull()
+                ?: return@get call.respond(HttpStatusCode.BadRequest, Respuesta("ID inválido",1 ))
+            val asignaturas = alumnoAsignaturaDAO.obtenerAsignaturasDeAlumno(idAlumno)
+            call.respond(HttpStatusCode.OK, asignaturas)
+        }
+    }
+
+    route("/hechizos") {
+        get {
+            val lista = hechizosDAO.getHechizos()
+            call.respond(HttpStatusCode.OK, lista)
+        }
+
+        post("/aprender") {
+            val body = call.receive<Map<String, Int>>() // { "id_hechizo":1, "id_alumno":2 }
+            val idHechizo = body["id_hechizo"] ?: return@post call.respond(HttpStatusCode.BadRequest, Respuesta("id_hechizo falta",1))
+            val idAlumno = body["id_alumno"] ?: return@post call.respond(HttpStatusCode.BadRequest, Respuesta("id_alumno falta",1))
+
+            val ok = hechizosDAO.aprenderHechizo(idHechizo, idAlumno)
+            if (ok) call.respond(HttpStatusCode.OK, Respuesta("Hechizo aprendido",0))
+            else call.respond(HttpStatusCode.Conflict, Respuesta("No se pudo aprender",1))
+        }
+        get("/{id}/hechizosAprendidos") {
+            val idAlumno = call.parameters["id"]?.toIntOrNull()
+                ?: return@get call.respond(HttpStatusCode.BadRequest, "ID inválido")
+
+            val lista = hechizosDAO.getHechizosAprendidos(idAlumno)
+
+            call.respond(HttpStatusCode.OK, lista)
+        }
+
+    }
+
 
     // 🔹 LISTADO
     route("/sombrero") {
@@ -29,7 +98,7 @@ fun Route.misRutas() {
         post("/asignar") {
             // Recibir preferencias desde Android
             val prefs = call.receive<PreferenciasCasa>()
-            val preferencias= PreferenciasCasa( prefs.preferencias)
+            val preferencias = PreferenciasCasa(prefs.preferencias)
 
             // Ejecutar la lógica del sombrero seleccionador
             val idCasaAsignada = sombrero.asignarCasa(preferencias)
@@ -42,8 +111,8 @@ fun Route.misRutas() {
             println("idCasa: ${idCasaAsignada}")
 
             //terminar sombrero
-                //ver si devuelve el log
-                // y terminar con el insert en la bbdd
+            //ver si devuelve el log
+            // y terminar con el insert en la bbdd
 
         }
     }
@@ -73,7 +142,7 @@ fun Route.misRutas() {
             )
         }
     }
-    get("/usuarios/email/{email}") {
+    get("/usuario/email/{email}") {
 
         val email = call.parameters["email"]
 
@@ -90,62 +159,103 @@ fun Route.misRutas() {
             call.respond(HttpStatusCode.NotFound, "Usuario no encontrado")
         }
     }
+    //TODOS LOS USUARIOS
+    get("/usuario/all") {
+        val usuarios = usuarioDAO.obtenerTodosAlumnos()
+
+        if (usuarios.isEmpty()) {
+            call.respond(HttpStatusCode.NotFound, "No hay usuarios en la base de datos")
+        } else {
+            call.respond(HttpStatusCode.OK, usuarios)
+        }
+    }
+    put("/usuario/actualizar") {
+
+        val usuario = call.receive<Usuario>()
+
+        val ok = usuarioDAO.actualizarUsuario(usuario)
+
+        if (ok) {
+            call.respond(
+                HttpStatusCode.OK,
+                Respuesta("Usuario actualizado correctamente", 0)
+            )
+        } else {
+            call.respond(
+                HttpStatusCode.NotFound,
+                Respuesta("No existe el usuario con email=${usuario.email}", 1)
+            )
+        }
+    }
 
 
+    // BORRAR POR EMAIL
 
+    delete("/usuario/borrar/{email}") {
 
+        val email = call.parameters["email"]
 
+        if (email.isNullOrBlank()) {
+            call.respond(HttpStatusCode.BadRequest, "Falta email")
+            return@delete
+        }
+
+        val ok = usuarioDAO.borrarUsuario(email)
+
+        if (ok) {
+            call.respond(
+                HttpStatusCode.OK,
+                Respuesta("Usuario eliminado correctamente", 0)
+            )
+        } else {
+            call.respond(
+                HttpStatusCode.NotFound,
+                Respuesta("No existe el usuario con email=$email", 1)
+            )
+        }
+    }
     //ver casas
     route("/listado") {
         get {
             val personas = hogwartsDao.obtenerTodos()
             return@get call.respond(HttpStatusCode.OK, personas)
         }
-        //casas po nombre
-        get("{nombre?}") {
+        // Buscar casa por nombre no tocar
+        get("/casas/{nombre}") {
+
             val nombre = call.parameters["nombre"]
-                ?: return@get call.respondText("nombre vacío en la URL", status = HttpStatusCode.BadRequest)
-
-            val casa = hogwartsDao.obtener(nombre = nombre)
-                ?: return@get call.respond(HttpStatusCode.NotFound, Respuesta("No existe ninguna casa con ese nombre=$nombre", 1))
-
-            return@get call.respond(HttpStatusCode.OK, casa)
-        }
-    }
-
-    // 🔹 LOGIN
-    route("/login") {
-        post {
-            val datos = call.receive<UsuarioLogin>()
-            val usuario = usuarioDAO.login(datos.email, datos.contrasena)
-
-            if (usuario == null) {
-                call.respond(
-                    HttpStatusCode.Unauthorized,
-                    Respuesta("Email o contraseña incorrectos", 1)
+                ?: return@get call.respond(
+                    HttpStatusCode.BadRequest,
+                    "El nombre de la casa no puede estar vacío"
                 )
-            } else {
-                call.respond(HttpStatusCode.OK, usuario)
-            }
+
+            val casa = hogwartsDao.obtenerPorNombre(nombre)
+                ?: return@get call.respond(
+                    HttpStatusCode.NotFound,
+                    "No existe ninguna casa con el nombre: $nombre"
+                )
+
+            call.respond(HttpStatusCode.OK, casa)
         }
     }
+    // /listado/casas/1
+    get("/casas/{id}") {
 
+        val id = call.parameters["id"]?.toIntOrNull()
+            ?: return@get call.respond(
+                HttpStatusCode.BadRequest,
+                "ID inválido"
+            )
 
+        val casa = hogwartsDao.obtenerPorId(id)
+            ?: return@get call.respond(
+                HttpStatusCode.NotFound,
+                "No existe una casa con id=$id"
+            )
 
-    // 🔹 BORRAR
-    route("/borrar") {
-        delete("{dni?}") {
-            val dni = call.parameters["dni"]
-                ?: return@delete call.respondText("DNI vacío en la URL", status = HttpStatusCode.BadRequest)
-
-            val eliminado = personaDAO.eliminar(dni)
-            if (eliminado) {
-                return@delete call.respond(HttpStatusCode.OK, Respuesta("Persona con DNI $dni eliminada correctamente", 0))
-            } else {
-                return@delete call.respond(HttpStatusCode.NotFound, Respuesta("No existe ninguna persona con DNI $dni", 1))
-            }
-        }
+        call.respond(HttpStatusCode.OK, casa)
     }
+
 
 }
 

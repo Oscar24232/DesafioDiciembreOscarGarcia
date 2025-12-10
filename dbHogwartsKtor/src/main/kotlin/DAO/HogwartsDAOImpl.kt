@@ -27,34 +27,48 @@ class HogwartsDAOImpl:HogwartsDAO {
             }
             return casas
         }
-    override fun obtener(nombre: String): Casa? {
-        val sql = "SELECT * FROM casas WHERE nombre = ?"
-        val connection = Database.getConnection()
-        var casa: Casa? = null
+        override fun obtenerPorNombre(nombre: String): Casa? {
+            val sql = "SELECT * FROM casas WHERE LOWER(nombre) = LOWER(?) LIMIT 1"
+            var casa: Casa? = null
 
-        println("🟢 [DAO] Buscando casa con nombre: $nombre")
+                Database.getConnection()?.use { conn ->
+                conn.prepareStatement(sql).use { st ->
+                st.setString(1, nombre)
 
-        connection?.use {
-            val statement = it.prepareStatement(sql)
-            statement.setString(1, nombre)
-            val resultSet = statement.executeQuery()
-
-            if (resultSet.next()) {
-                casa = Casa(
-                    id_casa = resultSet.getInt("id_casa"),
-                    nombre = resultSet.getString("nombre"),
-                    puntuacion = resultSet.getInt("puntuacion"),
-                    num_alumnos = resultSet.getInt("num_alumnos")
-                )
-                println("✅ [DAO] Casa encontrada: $casa")
-            } else {
-                println("⚠️ [DAO] No se encontró la casa con nombre: $nombre")
+                val rs = st.executeQuery()
+                    if (rs.next()) {
+                        casa = Casa(
+                            id_casa = rs.getInt("id_casa"),
+                            nombre = rs.getString("nombre"),
+                            puntuacion = rs.getInt("puntuacion"),
+                            num_alumnos = rs.getInt("num_alumnos")
+                        )
+                    }
+                }
             }
+            return casa
         }
 
-        return casa
+    override fun obtenerPorId(id: Int): Casa? {
+        val sql = "SELECT id_casa, nombre, puntuacion, num_alumnos FROM casas WHERE id_casa = ? LIMIT 1"
+
+        Database.getConnection()?.use { conn ->
+            conn.prepareStatement(sql).use { st ->
+                st.setInt(1, id)
+
+                st.executeQuery().use { rs ->
+                    if (rs.next()) {
+                        return Casa(
+                            id_casa = rs.getInt("id_casa"),
+                            nombre = rs.getString("nombre"),
+                            puntuacion = rs.getInt("puntuacion"),
+                            num_alumnos = rs.getInt("num_alumnos")
+                        )
+                    }
+                }
+            }
+        }
+        return null
     }
-
-
 }
 

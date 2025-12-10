@@ -21,7 +21,7 @@ class ViewModelCasa: ViewModel() {
     fun cargarPorCasa(nombre: String) {
         viewModelScope.launch {
             try {
-                val resp = UserNetwork.retrofit.loginRespuesta(nombre)
+                val resp = UserNetwork.retrofit.cargaPorCasas(nombre)
                 Log.d("API", "Código: ${resp.code()}  Body: ${resp.body()}")
 
                 if (resp.isSuccessful && resp.body() != null) {
