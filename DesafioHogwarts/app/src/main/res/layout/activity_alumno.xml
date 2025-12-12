@@ -13,6 +13,7 @@
         android:gravity="center_horizontal">
 
         <!-- FOTO DEL ALUMNO -->
+
         <ImageView
             android:id="@+id/imgAlumno"
             android:layout_width="151dp"
@@ -45,6 +46,7 @@
             android:layout_marginTop="20dp" />
 
         <!-- CASA -->
+
         <TextView
             android:id="@+id/txtCasaAlumno"
             android:layout_width="wrap_content"
@@ -85,6 +87,7 @@
             android:layout_marginTop="20dp" />
 
         <!-- BOTÓN CLASE DE POCIONES -->
+
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnClasePociones"
             android:layout_width="match_parent"
@@ -97,6 +100,7 @@
             android:enabled="false" />
 
         <!-- BOTÓN CLASE DE HECHIZOS -->
+
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnClaseHechizos"
             android:layout_width="match_parent"
@@ -110,16 +114,36 @@
 
         <!-- BOTÓN PARA VER SU CASA -->
         <com.google.android.material.button.MaterialButton
+            android:id="@+id/btHechizoAprendido"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:backgroundTint="#E8D29E"
+            android:text="HECHIZOS APRENDIDOS"
+            android:textColor="#000"
+            android:textSize="18sp" />
+
+        <!-- BOTÓN CERRAR SESIÓN -->
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btnVerCasa"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:backgroundTint="#E8D29E"
             android:text="VER MI CASA"
             android:textColor="#000"
-            android:textSize="18sp"
-            android:backgroundTint="#E8D29E"
-            android:layout_marginTop="40dp" />
+            android:textSize="18sp" />
 
-        <!-- BOTÓN CERRAR SESIÓN -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btRankingCasa"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:backgroundTint="#E8D29E"
+            android:text="RANKING CASAS"
+            android:textColor="#000"
+            android:textSize="18sp" />
+
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnLogoutAlumno"
             android:layout_width="match_parent"

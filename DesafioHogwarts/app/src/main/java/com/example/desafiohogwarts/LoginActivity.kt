@@ -5,10 +5,9 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import com.example.desafiohogwarts.Api.UsuarioCompartido
+import com.example.desafiohogwarts.Api.DatosCompartidos
 import com.example.desafiohogwarts.ViewModel.ViewModelLogin
 import com.example.desafiohogwarts.databinding.ActivityLoginBinding
-import com.example.desafiohogwarts.databinding.ActivitySuperAdminBinding
 
 class LoginActivity: AppCompatActivity() {
 
@@ -20,14 +19,14 @@ class LoginActivity: AppCompatActivity() {
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // ⬇️ OBSERVER FIJO → escucha solo UNA VEZ (muy importante)
+
         viewModel.usuarioCompleto.observe(this) { usuario ->
             if (usuario != null) {
 
-                // Guardar usuario
-                UsuarioCompartido.usuario = usuario
+                // GUARDAR USUARIO
+                DatosCompartidos.usuario = usuario
 
-                // Navegación según rol
+                // NAVEGACION SEGUN ROL
                 when (usuario.rol) {
                     4 -> startActivity(Intent(this, Activity_alumno::class.java))
                     3 -> startActivity(Intent(this, ActivityProfesor::class.java))
@@ -39,7 +38,7 @@ class LoginActivity: AppCompatActivity() {
             }
         }
 
-        // ⬇️ OBSERVER FIJO PARA ERRORES
+        //OBSERVER PARA ERRORES
         viewModel.error.observe(this) { msg ->
             msg?.let {
                 Toast.makeText(this, it, Toast.LENGTH_SHORT).show()

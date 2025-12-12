@@ -1,7 +1,6 @@
 package DAO
 
 import com.example.modelo.Casa
-import com.example.modelo.Persona
 import modelo.Usuario
 
 

@@ -11,27 +11,25 @@ class SombreroDAOImpl : SombreroDAO {
 
         override fun asignarCasa(preferencias: PreferenciasCasa): CasaAsignadaResponse {
 
-            // 1. Cargar todas las casas
+            // Cargar todas las casas
             val lista = hogwartsCasas.obtenerTodos()
 
-            // Si algo falla → fallback
+            // Si algo falla fallback
             if (lista.isEmpty()) return CasaAsignadaResponse(1)
 
-            // 2. Casa con menos alumnos
+            // Casa con menos alumnos
             val casaMenosAlumnos = lista.minByOrNull { it.num_alumnos }!!
 
-            // 3. Calcular promedio
+            // Calcular promedio
             val promedio = lista.sumOf { it.num_alumnos } / lista.size.toDouble()
 
-            // 4. Si está MUY por debajo del promedio → se favorece esa casa
+            // Si está MUY por debajo del promedio, se favorece esa casa
             val porcentaje = (casaMenosAlumnos.num_alumnos / promedio) * 100
             if (porcentaje < 85) {
                 return CasaAsignadaResponse(casaMenosAlumnos.id_casa)
             }
 
-            // ---------------------------
-            // 5. Mirar preferencias
-            // ---------------------------
+            //Mirar preferencias
 
             val prefs = preferencias.preferencias
             val valorMax = prefs.maxOf { it.value }
@@ -40,7 +38,7 @@ class SombreroDAOImpl : SombreroDAO {
             val favoritas = prefs.filter { it.value == valorMax }.keys
 
 
-            // 6. Si solo hay UNA favorita → esa
+            // Si solo hay UNA favorita → esa
             if (favoritas.size == 1) {
 
                 val nombre = favoritas.first()
@@ -51,7 +49,7 @@ class SombreroDAOImpl : SombreroDAO {
                 )
             }
 
-            // 7. Si hay EMPATE → random
+            // Si hay EMPATE → random
             val randomNombre = favoritas.random()
             val casaRandom = obtener_sombrero(randomNombre)
 
@@ -65,7 +63,7 @@ class SombreroDAOImpl : SombreroDAO {
         val connection = Database.getConnection()
         var casa: Casa? = null
 
-        println("🟢 [DAO] Buscando casa con nombre: $nombre")
+        println("[DAO] Buscando casa con nombre: $nombre")
 
         connection?.use {
             val statement = it.prepareStatement(sql)
@@ -79,12 +77,12 @@ class SombreroDAOImpl : SombreroDAO {
                     puntuacion = resultSet.getInt("puntuacion"),
                     num_alumnos = resultSet.getInt("num_alumnos")
                 )
-                println("✅ [DAO] Casa encontrada: $casa")
+                println("[DAO] Casa encontrada: $casa")
             } else {
-                println("⚠️ [DAO] No se encontró la casa con nombre: $nombre")
+                println("[DAO] No se encontró la casa con nombre: $nombre")
             }
         }
 
         return casa
     }
-    }
+}

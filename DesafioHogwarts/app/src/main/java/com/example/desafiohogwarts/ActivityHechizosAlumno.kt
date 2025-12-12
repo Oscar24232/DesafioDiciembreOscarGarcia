@@ -5,67 +5,63 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.desafiohogwarts.Adapters.Adapter_alumno_hechizos
-import com.example.desafiohogwarts.Api.UsuarioCompartido
+import com.example.desafiohogwarts.Adapters.Alumnos.Adapter_alumno_hechizos
+import com.example.desafiohogwarts.Api.DatosCompartidos
 import com.example.desafiohogwarts.ViewModel.Viewmodel_hechizos_alumno
 import com.example.desafiohogwarts.databinding.ActivityHechizosAlumnoBinding
 import modelo.Usuario
 
 class ActivityHechizosAlumno : AppCompatActivity() {
     private lateinit var binding: ActivityHechizosAlumnoBinding
-    private val viewModels: Viewmodel_hechizos_alumno by viewModels()
-    private lateinit var usuario: Usuario   // → viene del intent
+    private val vm: Viewmodel_hechizos_alumno by viewModels()
+    private lateinit var usuario: Usuario
+    private lateinit var adapter: Adapter_alumno_hechizos
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         binding = ActivityHechizosAlumnoBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        usuario = DatosCompartidos.usuario
 
-        // 1) RECIBIR USUARIO
-        usuario = UsuarioCompartido.usuario
-
-
+        // LAYOU
         binding.rvHechizos.layoutManager = LinearLayoutManager(this)
-        //hechizos aprendidos
-        viewModels.cargarHechizosAprendidos(usuario.id!!)
-        // 2) COMPROBAR SI EL ALUMNO TIENE LA ASIGNATURA
-        viewModels.comprobarAsignatura(idAlumno = usuario.id)
 
-        // 3) OBSERVAR SI PUEDE ENTRAR
-        viewModels.puedeEntrar.observe(this) { ok ->
-            if (ok) {
-                // Si tiene la asignatura, cargamos los hechizos
-                viewModels.cargarHechizos()
-            } else {
+        //Inicializamos adapter vacío (IMPORTANTE)
+        adapter = Adapter_alumno_hechizos(
+            mutableListOf(),
+            emptyList(),
+            this
+        )
+        binding.rvHechizos.adapter = adapter
+
+
+        //Cargar hechizos y aprendidos al inicio
+        vm.cargarHechizos()
+        vm.cargarHechizosAprendidos(usuario.id!!)
+
+        //Actualizar lista de hechizos
+        vm.hechizos.observe(this) { listaHechizos ->
+            adapter.actualizarHechizos(listaHechizos)
+        }
+
+        // Actualizar lista aprendidos
+        vm.aprendidos.observe(this) { listaAprendidos ->
+            adapter.actualizarAprendidos(listaAprendidos)
+        }
+
+        vm.puedeEntrar.observe(this) { ok ->
+            if (!ok) {
                 Toast.makeText(this, "No tienes acceso a esta asignatura", Toast.LENGTH_LONG).show()
+                finish()
             }
         }
 
-        // 4) OBSERVAR HECHIZOS Y CARGAR EL ADAPTER
-        viewModels.hechizos.observe(this) { lista ->
-            binding.rvHechizos.adapter =
-                Adapter_alumno_hechizos(lista.toMutableList(), this)
-        }
-
-        // 5) MENSAJES DEL VIEWMODEL (APRENDER HECHIZO)
-        viewModels.mensaje.observe(this) { msg ->
-            Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
-        }
-
-        // 6) BOTÓN VOLVER (si lo tienes)
-        binding.btnVolverHechizos.setOnClickListener {
-            finish()
-        }
+        vm.mensaje.observe(this) { Toast.makeText(this, it, Toast.LENGTH_SHORT).show() }
+        binding.btnVolverHechizos.setOnClickListener { finish() }
     }
 
-    // EL ADAPTER LLAMA A ESTA FUNCIÓN
     fun aprenderHechizo(idHechizo: Int) {
-        viewModels.aprenderHechizo(
-
-            idAlumno = usuario.id,
-            idHechizo = idHechizo
-        )
+        vm.aprenderHechizo(usuario.id!!, idHechizo)
     }
 }

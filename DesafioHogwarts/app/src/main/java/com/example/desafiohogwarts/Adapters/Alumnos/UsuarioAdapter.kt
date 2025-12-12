@@ -1,4 +1,4 @@
-package com.example.desafiohogwarts.Adapters
+package com.example.desafiohogwarts.Adapters.Alumnos
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Toast
@@ -90,5 +90,3 @@ class UsuarioAdapter(
     }
 }
 
-// PARA QUE NO DE ERROR SI AÚN NO LO IMPLEMENTO
-private fun GestionUsuarios.borrarUsuarioRemoto(email: String) {}

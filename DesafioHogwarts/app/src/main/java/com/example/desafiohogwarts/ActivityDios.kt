@@ -19,7 +19,6 @@ import com.google.android.material.navigation.NavigationView
 class ActivityDios : AppCompatActivity() {
     private lateinit var binding: ActivitySuperAdminBinding
     private lateinit var appBarConfiguration: AppBarConfiguration
-    private lateinit var toggle: ActionBarDrawerToggle
     private lateinit var navController: NavController
 
 
@@ -40,7 +39,7 @@ class ActivityDios : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_menu)
 
-        //******************* Para iniciar el navController que me permitirá navegar de un fragmento a otro.
+        // Para iniciar el navController que me permitirá navegar de un fragmento a otro.
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.fragmentContainer) as NavHostFragment
         navController = navHostFragment.navController
         //En el archivo mi_nav.xml los id de los fragmentos en el nav_graph debe coincidir con los id de los elementos en mi_menu.xml.
@@ -62,7 +61,7 @@ class ActivityDios : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
 
         //Como se carga el primer elemento, ponemos el título del primer fragmento.
-        supportActionBar?.title = "Opción 1"
+        supportActionBar?.title = "Gestio Usuarios"
 
         //Configura NavigationView
         val navView: NavigationView = binding.navigationView

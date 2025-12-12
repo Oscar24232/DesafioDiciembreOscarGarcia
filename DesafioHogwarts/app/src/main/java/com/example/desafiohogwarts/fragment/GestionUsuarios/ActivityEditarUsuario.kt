@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import com.example.desafiohogwarts.Api.DatosCompartidos
 import com.example.desafiohogwarts.databinding.ActivityEditarUsuarioBinding
 import kotlinx.coroutines.launch
 import modelo.Usuario
@@ -20,9 +21,9 @@ class ActivityEditarUsuario : AppCompatActivity() {
         setContentView(binding.root)
 
         // Recibir usuario CORRECTAMENTE
-        usuario = intent.getSerializableExtra("usuario") as Usuario
+        usuario = DatosCompartidos.usuario
 
-        // Rellenar los campos (esto ya funciona bien)
+
         binding.etCasa.setText(usuario.id_casa.toString())
         binding.etExp.setText(usuario.exp.toString())
         binding.etRol.setText(usuario.rol.toString())
@@ -79,7 +80,7 @@ class ActivityEditarUsuario : AppCompatActivity() {
             }
         }
 
-        // BOTÓN CANCELAR (simple cerrar)
+
         binding.btnCancelar.setOnClickListener {
             finish()
         }

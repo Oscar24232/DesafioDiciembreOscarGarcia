@@ -1,5 +1,6 @@
 package Api
 
+import com.example.desafiohogwarts.modelo.Asignaturas
 import com.example.desafiohogwarts.modelo.Casa
 import com.example.desafiohogwarts.modelo.CasaAsignada
 import com.example.desafiohogwarts.modelo.Hechizo
@@ -42,6 +43,9 @@ interface UserAPI {
     @GET("/casas/{id}")
     suspend fun obtenerCasa(@Path("id") idCasa: Int): Response<Casa>
 
+    @GET("/ranking/casas")
+    suspend fun getRankingCasas(): Response<MutableList<Casa>>
+
     //preferencias de la casa para elegir el sombrero
     @POST("sombrero/asignar")
     suspend fun evaluarPreferencias(
@@ -81,46 +85,27 @@ interface UserAPI {
     suspend fun aprenderHechizo(
         @Body body: Map<String, Int>
     ): Response<Respuesta>
-    @GET("hechizos/{id}/hechizosAprendidos")
+    @GET("/hechizos/aprendidos/{idAlumno}")
     suspend fun getHechizosAprendidos(
-        @Path("id") idAlumno: Int
-    ): Response<List<Int>>
+        @Path("idAlumno") idAlumno: Int
+    ): Response<List<Hechizo>>
 
 
+    @GET("profesor/{idProfesor}/asignaturas")
+    suspend fun getAsignaturasDelProfesor(@Path("idProfesor") idProfesor: Int?): Response<MutableList<Asignaturas>>
 
+    @GET("asignaturas/{idAsignatura}/alumnos")
+    suspend fun getAlumnosDeAsignatura(@Path("idAsignatura") idAsignatura: Int?): Response<MutableList<Usuario>>
 
+    @POST("asignaturas/{idAsignatura}/alumnos/{idAlumno}")
+    suspend fun addAlumnoAAsignatura(@Path("idAsignatura") idAsignatura: Int?,
+                                     @Path("idAlumno") idAlumno: Int?
+        ): Response<Void>
 
+    @DELETE("asignaturas/{idAsignatura}/alumnos/{idAlumno}")
+        suspend fun removeAlumnoDeAsignatura(
+        @Path("idAsignatura") idAsignatura: Int?,
+        @Path("idAlumno") idAlumno: Int?
+        ): Response<Void>
 
-
-
-
-
-
-
-    /*
-        @POST("login")
-        suspend fun login(@Body cred: UsuarioLogin): Response<Respuesta>
-
-        @GET("listado/{dni}")
-        suspend fun getUsuarioPorDni(@Path("dni") dni: String): Response<Usuario>
-
-        @GET("encuestas")
-        suspend fun getEncuestas(): Response<List<Encuesta>>
-
-        @GET("encuestas/{id}")
-        suspend fun getEncuesta(@Path("id") id: Int): Response<Encuesta>
-
-        @POST("encuestas/registrar")
-        suspend fun addEncuesta(@Body encuestaData: Encuesta): Response<Respuesta>
-
-        @DELETE("encuestas/borrar/{id}")
-        suspend fun delEncuesta(@Path("id") id: Int): Response<Boolean>
-
-        @PUT("encuestas/modificar/{id}")
-        suspend fun updateEncuesta(
-            @Path("id") id: Int,
-            @Body encuestaData: Encuesta
-        ): Response<Boolean>
-
-     */
-}
+    }

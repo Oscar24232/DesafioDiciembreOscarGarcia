@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="6dp"
+    android:padding="8dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <!-- NOMBRE -->
+        <TextView
+            android:id="@+id/tvAlumnoNombre"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Harry Potter"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <!-- EXP -->
+        <TextView
+            android:id="@+id/tvAlumnoExp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvAlumnoNombre"
+            android:layout_marginTop="4dp"
+            android:text="Exp: 120"
+            android:textSize="14sp" />
+
+        <!-- CASA -->
+        <TextView
+            android:id="@+id/tvAlumnoCasa"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvAlumnoExp"
+            android:layout_marginTop="4dp"
+            android:text="Casa: Gryffindor"
+            android:textSize="14sp" />
+
+        <!-- BOTÓN ELIMINAR -->
+        <ImageButton
+            android:id="@+id/btnEliminarAlumno"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_alignParentEnd="true"
+            android:src="@android:drawable/ic_delete"
+            android:contentDescription="Eliminar alumno"
+            android:background="?android:selectableItemBackgroundBorderless"/>
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>

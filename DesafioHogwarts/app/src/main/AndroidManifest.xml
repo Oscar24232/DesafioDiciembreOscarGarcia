@@ -56,6 +56,11 @@
 
         </activity>
         <activity
+            android:name=".Activity_hechizos_alumnos_aprendidos"
+            android:exported="false">
+
+        </activity>
+        <activity
             android:name=".fragment.GestionUsuarios.ActivityEditarUsuario"
             android:exported="false">
 
@@ -69,6 +74,14 @@
             android:name=".ActivityHechizosAlumno"
             android:exported="false">
 
+        </activity>
+        <activity
+            android:name=".ActivityRankingCasas"
+            android:exported="false">
+        </activity>
+        <activity
+            android:name=".AsignaturaDetailActivity"
+            android:exported="false">
         </activity>
 
         <activity android:name=".LoginActivity" android:exported="false">

@@ -2,13 +2,18 @@ package com.example.desafiohogwarts.ViewModel
 
 import Api.UserNetwork
 import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewModelScope
+import com.example.desafiohogwarts.R
 import com.example.desafiohogwarts.modelo.Casa
 import kotlinx.coroutines.launch
 import java.io.IOException
+
+
 
 
 class ViewModelCasa: ViewModel() {

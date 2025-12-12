@@ -2,8 +2,6 @@ package com.example.DAO
 
 import Helpers.Database
 import com.example.modelo.Casa
-import com.example.modelo.Encuesta
-import com.example.modelo.Persona
 import kotlin.use
 
 class HogwartsDAOImpl:HogwartsDAO {
@@ -70,5 +68,33 @@ class HogwartsDAOImpl:HogwartsDAO {
         }
         return null
     }
+    override fun getRankingCasas(): MutableList<Casa> {
+        val lista = mutableListOf<Casa>()
+
+        val sql = """
+        SELECT id_casa, nombre, puntuacion, num_alumnos
+        FROM casas
+        ORDER BY puntuacion DESC
+    """.trimIndent()
+
+        Database.getConnection()?.use { conn ->
+            conn.prepareStatement(sql).use { st ->
+                val rs = st.executeQuery()
+                while (rs.next()) {
+                    lista.add(
+                        Casa(
+                            id_casa = rs.getInt("id_casa"),
+                            nombre = rs.getString("nombre"),
+                            puntuacion = rs.getInt("puntuacion"),
+                            num_alumnos = rs.getInt("num_alumnos")
+                        )
+                    )
+                }
+            }
+        }
+
+        return lista
+    }
+
 }
 

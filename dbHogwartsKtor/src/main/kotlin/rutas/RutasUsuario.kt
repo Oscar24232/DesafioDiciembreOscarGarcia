@@ -4,8 +4,10 @@ package rutas
 import AlumnoDAO
 import DAO.HechizosDAO
 import DAO.HechizosDAOImpl
+import DAO.ProfesorDAO
 import DAO.UsuarioDAO
 import DAO.UsuarioDAOImpl
+import ProfesorDAOImpl
 import com.example.DAO.AlumnoDAOImpl
 import com.example.DAO.HogwartsDAO
 import com.example.DAO.HogwartsDAOImpl
@@ -22,12 +24,12 @@ import modelo.Usuario
 
 
 fun Route.misRutas() {
-    val personaDAO: UsuarioDAO = UsuarioDAOImpl()
     val hogwartsDao: HogwartsDAO = HogwartsDAOImpl()
     val sombrero: SombreroDAO = SombreroDAOImpl()
     val usuarioDAO: UsuarioDAO = UsuarioDAOImpl()
     val alumnoAsignaturaDAO: AlumnoDAO = AlumnoDAOImpl()
     val hechizosDAO: HechizosDAO= HechizosDAOImpl()
+    var profesorDAO: ProfesorDAO = ProfesorDAOImpl()
 
     // LOGIN
     route("/login") {
@@ -80,19 +82,20 @@ fun Route.misRutas() {
             if (ok) call.respond(HttpStatusCode.OK, Respuesta("Hechizo aprendido",0))
             else call.respond(HttpStatusCode.Conflict, Respuesta("No se pudo aprender",1))
         }
-        get("/{id}/hechizosAprendidos") {
-            val idAlumno = call.parameters["id"]?.toIntOrNull()
-                ?: return@get call.respond(HttpStatusCode.BadRequest, "ID inválido")
+        //para la recycler de los hechizos aprendidos
+        get("/aprendidos/{idAlumno}") {
+            val idAlumno = call.parameters["idAlumno"]?.toIntOrNull()
+                ?: return@get call.respond(HttpStatusCode.BadRequest, Respuesta("ID inválido", 1))
 
             val lista = hechizosDAO.getHechizosAprendidos(idAlumno)
-
             call.respond(HttpStatusCode.OK, lista)
         }
+
 
     }
 
 
-    // 🔹 LISTADO
+    //LISTADO
     route("/sombrero") {
 
         post("/asignar") {
@@ -128,9 +131,9 @@ fun Route.misRutas() {
             )
         }
         // Insertar usuario
-        val ok = usuarioDAO.insertar(usuario)
+        val bool = usuarioDAO.insertar(usuario)
 
-        if (ok) {
+        if (bool) {
             call.respond(
                 HttpStatusCode.Created,
                 Respuesta("Usuario insertado correctamente", 0)
@@ -173,9 +176,9 @@ fun Route.misRutas() {
 
         val usuario = call.receive<Usuario>()
 
-        val ok = usuarioDAO.actualizarUsuario(usuario)
+        val bool = usuarioDAO.actualizarUsuario(usuario)
 
-        if (ok) {
+        if (bool) {
             call.respond(
                 HttpStatusCode.OK,
                 Respuesta("Usuario actualizado correctamente", 0)
@@ -200,9 +203,9 @@ fun Route.misRutas() {
             return@delete
         }
 
-        val ok = usuarioDAO.borrarUsuario(email)
+        val bool = usuarioDAO.borrarUsuario(email)
 
-        if (ok) {
+        if (bool) {
             call.respond(
                 HttpStatusCode.OK,
                 Respuesta("Usuario eliminado correctamente", 0)
@@ -254,6 +257,73 @@ fun Route.misRutas() {
             )
 
         call.respond(HttpStatusCode.OK, casa)
+    }
+    get("/ranking/casas") {
+        try {
+            val ranking = hogwartsDao.getRankingCasas()
+            println("Ranking generado con ${ranking.size} casas")
+            call.respond(ranking)
+        } catch (e: Exception) {
+            println("ERROR RANKING CASAS: ${e.message}")
+            call.respond(HttpStatusCode.InternalServerError, "Error: ${e.message}")
+        }
+    }
+    get("/profesor/{idProfesor}/asignaturas") {
+        val idProfesor = call.parameters["idProfesor"]?.toIntOrNull()
+
+        if (idProfesor == null) {
+            call.respond(HttpStatusCode.BadRequest, "ID inválido")
+            return@get
+        }
+
+        val asignaturas = profesorDAO.getAsignaturasDelProfesor(idProfesor)
+
+        call.respond(HttpStatusCode.OK, asignaturas)
+    }
+    get("/asignaturas/{idAsignatura}/alumnos") {
+        val idAsignatura = call.parameters["idAsignatura"]?.toIntOrNull()
+
+        if (idAsignatura == null) {
+            call.respond(HttpStatusCode.BadRequest, "ID inválido")
+            return@get
+        }
+
+        val alumnos = profesorDAO.getAlumnosDeAsignatura(idAsignatura)
+
+        call.respond(HttpStatusCode.OK, alumnos)
+    }
+    post("/asignaturas/{idAsignatura}/alumnos/{idAlumno}") {
+        val idAsignatura = call.parameters["idAsignatura"]?.toIntOrNull()
+        val idAlumno = call.parameters["idAlumno"]?.toIntOrNull()
+
+        if (idAsignatura == null || idAlumno == null) {
+            call.respond(HttpStatusCode.BadRequest, "Datos inválidos")
+            return@post
+        }
+
+        val yaExiste = profesorDAO.existeRelacionAlumnoAsignatura(idAlumno, idAsignatura)
+
+        if (yaExiste) {
+            call.respond(HttpStatusCode.Conflict, "El alumno ya está en la asignatura")
+            return@post
+        }
+
+        profesorDAO.insertAlumnoEnAsignatura(idAlumno, idAsignatura)
+
+        call.respond(HttpStatusCode.OK)
+    }
+    delete("/asignaturas/{idAsignatura}/alumnos/{idAlumno}") {
+        val idAsignatura = call.parameters["idAsignatura"]?.toIntOrNull()
+        val idAlumno = call.parameters["idAlumno"]?.toIntOrNull()
+
+        if (idAsignatura == null || idAlumno == null) {
+            call.respond(HttpStatusCode.BadRequest, "Datos inválidos")
+            return@delete
+        }
+
+        profesorDAO.eliminarAlumnoDeAsignatura(idAlumno, idAsignatura)
+
+        call.respond(HttpStatusCode.OK)
     }
 
 

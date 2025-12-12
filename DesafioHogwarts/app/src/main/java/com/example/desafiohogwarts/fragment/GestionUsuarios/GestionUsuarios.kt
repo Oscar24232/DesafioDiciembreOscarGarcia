@@ -12,7 +12,7 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.desafiohogwarts.ViewModel.GestionUsuariosViewModel
 import com.example.desafiohogwarts.databinding.FragmentGestionUsuariosBinding
-import com.example.desafiohogwarts.Adapters.UsuarioAdapter
+import com.example.desafiohogwarts.Adapters.Alumnos.UsuarioAdapter
 import modelo.Usuario
 
 class GestionUsuarios : Fragment() {
@@ -61,7 +61,6 @@ class GestionUsuarios : Fragment() {
 
 
         // EL BUSCADOR
-
         binding.etBuscarUsuario.addTextChangedListener { texto ->
             val query = texto.toString().trim().lowercase()
 
@@ -90,14 +89,12 @@ class GestionUsuarios : Fragment() {
 
 
         // CARGAR USUARIOS
-
         viewModel.cargarUsuarios()
     }
 
 
 
     // ESTA FUNCIÓN LA LLAMA EL ADAPTER
-
     fun borrarUsuarioRemoto(email: String) {
         viewModel.borrarUsuario(email)
     }

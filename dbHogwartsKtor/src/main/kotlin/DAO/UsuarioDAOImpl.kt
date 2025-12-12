@@ -2,7 +2,6 @@ package DAO
 
 import Helpers.Database
 import com.example.modelo.Casa
-import com.example.modelo.Persona
 import modelo.Usuario
 
 
@@ -52,7 +51,7 @@ class UsuarioDAOImpl : UsuarioDAO {
                             id_casa = rs.getInt("id_casa"),
                             exp = rs.getInt("exp"),
                             nivel = rs.getInt("nivel"),
-                            estado = rs.getString("estado"),
+                            estado = rs.getInt("estado"),
                             rol = rs.getInt("rol")
                         )
                     }
@@ -87,7 +86,7 @@ class UsuarioDAOImpl : UsuarioDAO {
                             id_casa = rs.getInt("id_casa"),
                             exp = rs.getInt("exp"),
                             nivel = rs.getInt("nivel"),
-                            estado = rs.getString("estado"),
+                            estado = rs.getInt("estado"),
                             rol = rs.getInt("rol")
                         )
                     }
@@ -122,7 +121,7 @@ class UsuarioDAOImpl : UsuarioDAO {
                                 id_casa = rs.getInt("id_casa"),
                                 exp = rs.getInt("exp"),
                                 nivel = rs.getInt("nivel"),
-                                estado = rs.getString("estado"),
+                                estado = rs.getInt("estado"),
                                 rol = rs.getInt("rol")
                             )
                         )
@@ -155,7 +154,7 @@ class UsuarioDAOImpl : UsuarioDAO {
                 st.setInt(4, usuario.id_casa)
                 st.setInt(5, usuario.exp)
                 st.setInt(6, usuario.nivel)
-                st.setString(7, usuario.estado)
+                st.setInt(7, usuario.estado)
                 st.setInt(8, usuario.rol)
                 st.setString(9, usuario.email)
 
@@ -166,9 +165,8 @@ class UsuarioDAOImpl : UsuarioDAO {
         return false
     }
 
-    // --------------------------------------------------------
+
     // BORRAR POR EMAIL
-    // --------------------------------------------------------
     override fun borrarUsuario(email: String): Boolean {
         val sql = "DELETE FROM usuarios WHERE email = ?"
 
@@ -184,27 +182,87 @@ class UsuarioDAOImpl : UsuarioDAO {
 
 
     override fun insertar(usuario: Usuario): Boolean {
-        val sql = """
-            INSERT INTO usuarios (nombre,email,contrasena,foto,id_casa,exp,nivel,estado,rol)
-            VALUES (?,?,?,?,?,?,?,?,?)
-        """.trimIndent()
+
+        val sqlUsuario = """
+        INSERT INTO usuarios (nombre, email, contrasena, foto, id_casa, exp, nivel, estado, rol)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+    """.trimIndent()
+
+        val sqlLogin = """
+        INSERT INTO login_usuario (email, contrasena)
+        VALUES (?, ?)
+    """.trimIndent()
+
+        val sqlCasa = """
+        UPDATE casas SET num_alumnos = num_alumnos + 1
+        WHERE id_casa = ?
+    """.trimIndent()
+
+        val sqlRol = """
+        INSERT INTO usuario_rol (id_usuario, id_rol)
+        VALUES (?, ?)
+    """.trimIndent()
 
         Database.getConnection()?.use { conn ->
-            val st = conn.prepareStatement(sql)
-            st.setString(1, usuario.nombre)
-            st.setString(2, usuario.email)
-            st.setString(3, usuario.contrasena)
-            st.setString(4, usuario.foto)
-            st.setInt(5, usuario.id_casa)
-            st.setInt(6, usuario.exp)
-            st.setInt(7, usuario.nivel)
-            st.setString(8, usuario.estado)
-            st.setInt(9,usuario.rol)
 
-            return st.executeUpdate() > 0
+            conn.autoCommit = false
+            var nuevoId = 0
+
+            try {
+                // INSERTAR USUARIO
+                conn.prepareStatement(sqlUsuario, java.sql.Statement.RETURN_GENERATED_KEYS).use { st ->
+                    st.setString(1, usuario.nombre)
+                    st.setString(2, usuario.email)
+                    st.setString(3, usuario.contrasena)
+                    st.setString(4, usuario.foto)
+                    st.setInt(5, usuario.id_casa)
+                    st.setInt(6, usuario.exp)
+                    st.setInt(7, usuario.nivel)
+                    st.setInt(8, usuario.estado)
+                    st.setInt(9, usuario.rol)
+
+                    st.executeUpdate()
+
+                    val rs = st.generatedKeys
+                    if (rs.next()) {
+                        nuevoId = rs.getInt(1)
+                    }
+                }
+
+                // INSERTAR EN LOGIN
+                conn.prepareStatement(sqlLogin).use { st ->
+                    st.setString(1, usuario.email)
+                    st.setString(2, usuario.contrasena)
+                    st.executeUpdate()
+                }
+
+                // SUMAR ALUMNO A CASA
+                conn.prepareStatement(sqlCasa).use { st ->
+                    st.setInt(1, usuario.id_casa)
+                    st.executeUpdate()
+                }
+
+                // INSERTAR ROL
+                conn.prepareStatement(sqlRol).use { st ->
+                    st.setInt(1, nuevoId)
+                    st.setInt(2, usuario.rol)
+                    st.executeUpdate()
+                }
+
+                conn.commit()
+                return true
+
+            } catch (e: Exception) {
+                e.printStackTrace()
+                conn.rollback()
+            }
         }
+
         return false
     }
+
+
+
 
     override fun obtenerTodasLasCasas(): List<Casa> {
         TODO("Not yet implemented")

@@ -38,9 +38,6 @@ class MainActivity : AppCompatActivity() {
                 Toast.makeText(this, "No se encontró la casa", Toast.LENGTH_LONG).show()
             }
         }
-
-
-
         lifecycleScope.launch {
             val casa = viewModel.cargarPorCasa("GRYFFINDOR")
             Log.d("CASA", "Casa recibida: $casa")

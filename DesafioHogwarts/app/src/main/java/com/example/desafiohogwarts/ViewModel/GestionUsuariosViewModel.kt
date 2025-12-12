@@ -6,7 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.desafiohogwarts.Adapters.UsuarioAdapter
+import com.example.desafiohogwarts.Adapters.Alumnos.UsuarioAdapter
 import kotlinx.coroutines.launch
 import modelo.Usuario
 
@@ -21,9 +21,6 @@ class GestionUsuariosViewModel : ViewModel() {
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> get() = _isLoading
 
-    // -------------------------------
-    // Lista local (igual que ejemplo)
-    // -------------------------------
     private val listaLocal = ArrayList<Usuario>()
 
     // Adapter (se inyecta desde el fragment)

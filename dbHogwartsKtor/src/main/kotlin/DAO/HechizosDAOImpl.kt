@@ -66,22 +66,34 @@ class HechizosDAOImpl : HechizosDAO {
         }
         return boolean
     }
-    override fun getHechizosAprendidos(idAlumno: Int): List<Int> {
-        val lista = mutableListOf<Int>()
-        val sql = "SELECT id_hechizo FROM alumno_hechizo WHERE id_usuario = ?"
-
+    override fun getHechizosAprendidos(idAlumno: Int): MutableList<Hechizo> {
+        val lista = mutableListOf<Hechizo>()
+        val sql = """
+        SELECT h.id, h.nombre, h.descripcion, h.experiencia_alumno
+        FROM hechizo h
+        INNER JOIN alumno_hechizo ah ON ah.id_hechizo = h.id
+        WHERE ah.id_usuario = ?
+    """.trimIndent()
+        println("➡️ getHechizosAprendidos() llamado con idAlumno = $idAlumno")
+        println("➡️ SQL a ejecutar:\n$sql")
         Database.getConnection()?.use { conn ->
             conn.prepareStatement(sql).use { st ->
                 st.setInt(1, idAlumno)
                 val rs = st.executeQuery()
                 while (rs.next()) {
-                    lista.add(rs.getInt("id_hechizo"))
+                    lista.add(
+                        Hechizo(
+                            id = rs.getInt("id"),
+                            nombre = rs.getString("nombre"),
+                            descripcion = rs.getString("descripcion"),
+                            experiencia_alumno = rs.getInt("experiencia_alumno")
+                        )
+                    )
                 }
             }
         }
         return lista
     }
-
 
 
 }

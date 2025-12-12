@@ -3,34 +3,48 @@ package com.example.desafiohogwarts
 import GestionPreferenciasYRegistrosViewModel
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
-import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import com.example.desafiohogwarts.Api.UsuarioCompartido
+import com.example.desafiohogwarts.Api.DatosCompartidos
 import com.example.desafiohogwarts.databinding.ActivityRegistroBinding
 import com.example.desafiohogwarts.modelo.PreferenciasCasa
 import modelo.Usuario
 
 
-class RegistroActivity: AppCompatActivity() {
+class RegistroActivity : AppCompatActivity() {
+
     private lateinit var binding: ActivityRegistroBinding
     private val viewModel: GestionPreferenciasYRegistrosViewModel by viewModels()
-    lateinit var user: Usuario
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-
         binding = ActivityRegistroBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // ⬇️ ESTE OBSERVER DEBE IR AQUÍ, FUERA DEL BOTÓN
+        // CASA ASIGNADA POR EL SOMBRERO
+        viewModel.idCasaAsignada.observe(this) { idCasa ->
+            if (idCasa != null) {
+                registrarUsuario(idCasa)
+            }
+        }
+
+        viewModel.exito.observe(this) {
+            // después de insertar, cargamos el usuario
+            viewModel.cargarUsuarioPorEmail(
+                binding.etEmail.text.toString()
+            )
+        }
+
+        // ERRORES
+        viewModel.error.observe(this) {
+            Toast.makeText(this, it, Toast.LENGTH_LONG).show()
+        }
+
+        // USUARIO COMPLETO → ENTRAR
         viewModel.usuarioCompleto.observe(this) { usuario ->
             if (usuario != null) {
-
-                UsuarioCompartido.usuario = usuario  // Guardamos usuario global
+                DatosCompartidos.usuario = usuario
 
                 when (usuario.rol) {
                     4 -> startActivity(Intent(this, Activity_alumno::class.java))
@@ -39,13 +53,11 @@ class RegistroActivity: AppCompatActivity() {
             }
         }
 
-        binding.btnAtras.setOnClickListener {
-            startActivity(Intent(this, InicioActivity::class.java))
-            finish()
-        }
+
+        // BOTÓN
+
 
         binding.btSombrero.setOnClickListener {
-
             val casasPreferencias = hashMapOf(
                 "Gryffindor" to binding.seekGryffindor.progress,
                 "Hufflepuff" to binding.seekHufflepuff.progress,
@@ -53,53 +65,34 @@ class RegistroActivity: AppCompatActivity() {
                 "Slytherin" to binding.seekSlytherin.progress
             )
 
-            val req = PreferenciasCasa(casasPreferencias)
-            viewModel.enviarPreferencias(req)
-
-            var nivel = 0
-            var rol = 0
-
-            if (binding.rbAlumno.isChecked) {
-                nivel = 1
-                rol = 4
-            } else if (binding.rbProfesor.isChecked) {
-                nivel = 2
-                rol = 3
-            } else {
-                nivel = 5
-                rol = 2
-            }
-
-            var casaElegida = 0
-
-            viewModel.idCasaAsignada.observe(this) { id ->
-                casaElegida = id
-            }
-
-            user = Usuario(
-                nombre = binding.etNombre.text.toString(),
-                email = binding.etEmail.text.toString(),
-                contrasena = binding.etPass.text.toString(),
-                foto = "sinFoto.png",
-                id_casa = casaElegida,
-                exp = 0,
-                nivel = nivel,
-                estado = "1",
-                rol = rol
-            )
-
-            viewModel.insertarUsuario(user)
-
-            viewModel.exito.observe(this) {
-                Toast.makeText(this, it, Toast.LENGTH_LONG).show()
-            }
-
-            viewModel.error.observe(this) {
-                Toast.makeText(this, it, Toast.LENGTH_LONG).show()
-            }
-
-            // ⬇️ Esto activará el observer que ya está arriba
-            viewModel.cargarUsuarioPorEmail(user.email)
+            viewModel.enviarPreferencias(PreferenciasCasa(casasPreferencias))
         }
+    }
+
+
+    //FUNCIÓN QUE REGISTRA EL USUARIO
+    private fun registrarUsuario(idCasa: Int) {
+
+        val rol = when {
+            binding.rbAlumno.isChecked -> 4
+            binding.rbProfesor.isChecked -> 3
+            else -> 2
+        }
+
+        val nivel = if (rol == 4) 1 else 2
+
+        val usuario = Usuario(
+            nombre = binding.etNombre.text.toString(),
+            email = binding.etEmail.text.toString(),
+            contrasena = binding.etPass.text.toString(),
+            foto = "sinFoto.png",
+            id_casa = idCasa,
+            exp = 0,
+            nivel = nivel,
+            estado = "1",
+            rol = rol
+        )
+
+        viewModel.insertarUsuario(usuario)
     }
 }

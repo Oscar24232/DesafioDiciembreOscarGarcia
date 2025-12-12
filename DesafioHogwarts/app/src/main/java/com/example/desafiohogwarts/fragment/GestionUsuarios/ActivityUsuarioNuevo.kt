@@ -19,9 +19,8 @@ class ActivityUsuarioNuevo : AppCompatActivity() {
         binding = ActivityNuevoUsuarioBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // -------------------------
         // BOTÓN GUARDAR USUARIO NUEVO
-        // -------------------------
+
         binding.btnGuardar.setOnClickListener {
 
             // Leer campos
@@ -67,9 +66,7 @@ class ActivityUsuarioNuevo : AppCompatActivity() {
             }
         }
 
-        // -------------------------
         // BOTÓN CANCELAR
-        // -------------------------
         binding.btnCancelar.setOnClickListener {
             finish()
         }

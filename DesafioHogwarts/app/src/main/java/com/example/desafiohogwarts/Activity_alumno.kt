@@ -6,7 +6,7 @@ import android.os.Bundle
 import android.util.Log
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import com.example.desafiohogwarts.Api.UsuarioCompartido
+import com.example.desafiohogwarts.Api.DatosCompartidos
 import com.example.desafiohogwarts.ViewModel.Viewmodel_activity_alumno
 import com.example.desafiohogwarts.databinding.ActivityAlumnoBinding
 import modelo.Usuario
@@ -25,7 +25,7 @@ class Activity_alumno : AppCompatActivity() {
         setContentView(binding.root)
 
         // USUARIO DESDE EL OBJECT COMPARTIDO
-        usuario = UsuarioCompartido.usuario
+        usuario = DatosCompartidos.usuario
 
         Log.d("AlumnoActivity", "Usuario cargado -> $usuario")
 
@@ -52,27 +52,37 @@ class Activity_alumno : AppCompatActivity() {
         // VER MI CASA
         binding.btnVerCasa.setOnClickListener {
             val intent = Intent(this, Activity_miCasa::class.java)
-            intent.putExtra("idCasa", usuario.id_casa)
+
             startActivity(intent)
         }
 
         // LOGOUT
         binding.btnLogoutAlumno.setOnClickListener {
-            startActivity(Intent(this, LoginActivity::class.java))
+            startActivity(Intent(this, InicioActivity::class.java))
             finish()
         }
 
         binding.btnClaseHechizos.setOnClickListener {
             startActivity(Intent(this, ActivityHechizosAlumno::class.java))
         }
+        binding.btHechizoAprendido.setOnClickListener {
+            Log.d("clic", "Usuario: ${DatosCompartidos.usuario}")
+
+            startActivity(Intent(this, Activity_hechizos_alumnos_aprendidos::class.java))
+        }
+        binding.btRankingCasa.setOnClickListener{
+            Log.d("clic", "Usuario: ${DatosCompartidos.usuario}")
+            startActivity(Intent(this, ActivityRankingCasas::class.java))
+        }
     }
+
 
     private fun nombreCasa(id: Int): String {
         return when (id) {
             1 -> "Gryffindor"
-            2 -> "Hufflepuff"
-            3 -> "Ravenclaw"
-            4 -> "Slytherin"
+            2 -> "Slytherin"
+            3 -> "Hufflepuff"
+            4 -> "Ravenclaw"
             else -> "Sin casa"
         }
     }
