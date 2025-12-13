@@ -7,20 +7,23 @@
     android:background="@drawable/comedorhogwart">
 
     <!-- Toolbar -->
+
+    <!-- Buscador -->
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbarGestionUsuarios"
         android:layout_width="0dp"
         android:layout_height="56dp"
+        android:layout_marginTop="16dp"
         android:background="@android:color/transparent"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         android:title="Gestión de Usuarios"
         android:titleTextColor="#E8D29E"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        app:navigationIcon="@drawable/round_arrow_back_24"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:navigationIcon="@drawable/round_arrow_back_24" />
 
-    <!-- Buscador -->
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/buscadorUsuariosLayout"
         android:layout_width="0dp"

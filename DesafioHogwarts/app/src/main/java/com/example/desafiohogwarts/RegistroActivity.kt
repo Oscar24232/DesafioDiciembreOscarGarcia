@@ -45,18 +45,12 @@ class RegistroActivity : AppCompatActivity() {
         viewModel.usuarioCompleto.observe(this) { usuario ->
             if (usuario != null) {
                 DatosCompartidos.usuario = usuario
-
-                when (usuario.rol) {
-                    4 -> startActivity(Intent(this, Activity_alumno::class.java))
-                    3 -> startActivity(Intent(this, ActivityProfesor::class.java))
-                }
+                    startActivity(Intent(this, Activity_alumno::class.java))
             }
         }
 
 
         // BOTÓN
-
-
         binding.btSombrero.setOnClickListener {
             val casasPreferencias = hashMapOf(
                 "Gryffindor" to binding.seekGryffindor.progress,
@@ -72,15 +66,6 @@ class RegistroActivity : AppCompatActivity() {
 
     //FUNCIÓN QUE REGISTRA EL USUARIO
     private fun registrarUsuario(idCasa: Int) {
-
-        val rol = when {
-            binding.rbAlumno.isChecked -> 4
-            binding.rbProfesor.isChecked -> 3
-            else -> 2
-        }
-
-        val nivel = if (rol == 4) 1 else 2
-
         val usuario = Usuario(
             nombre = binding.etNombre.text.toString(),
             email = binding.etEmail.text.toString(),
@@ -88,9 +73,9 @@ class RegistroActivity : AppCompatActivity() {
             foto = "sinFoto.png",
             id_casa = idCasa,
             exp = 0,
-            nivel = nivel,
+            nivel = 1,
             estado = "1",
-            rol = rol
+            rol = 4
         )
 
         viewModel.insertarUsuario(usuario)

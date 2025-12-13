@@ -27,7 +27,7 @@ class ActivityHechizosAlumno : AppCompatActivity() {
         // LAYOU
         binding.rvHechizos.layoutManager = LinearLayoutManager(this)
 
-        //Inicializamos adapter vacío (IMPORTANTE)
+        //Inicializamos adapter
         adapter = Adapter_alumno_hechizos(
             mutableListOf(),
             emptyList(),

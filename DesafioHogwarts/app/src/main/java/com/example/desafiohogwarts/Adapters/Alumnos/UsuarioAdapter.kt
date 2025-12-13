@@ -3,6 +3,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
+import com.example.desafiohogwarts.Api.DatosCompartidos
 import com.example.desafiohogwarts.databinding.ItemCardBinding
 import com.example.desafiohogwarts.fragment.GestionUsuarios.GestionUsuarios
 import modelo.Usuario
@@ -43,9 +44,10 @@ class UsuarioAdapter(
 
         // CLICK CORTO → mostrar detalle
         holder.itemView.setOnClickListener {
+            DatosCompartidos.usuario = usuario
             val ctx = holder.itemView.context
 
-            val detalle = """
+            val usuarioSeleccion = """
                 Nombre: ${usuario.nombre}
                 Email: ${usuario.email}
                 Casa: ${holder.binding.txtCasaUsuario.text}
@@ -55,7 +57,7 @@ class UsuarioAdapter(
                 Rol: ${usuario.rol}
             """.trimIndent()
             host.usuarioSeleccionado = usuario
-            Toast.makeText(ctx, detalle, Toast.LENGTH_LONG).show()
+            Toast.makeText(ctx, usuarioSeleccion, Toast.LENGTH_LONG).show()
         }
 
         // CLICK LARGO → borrar (llama a host)

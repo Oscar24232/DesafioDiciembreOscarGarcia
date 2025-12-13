@@ -89,10 +89,10 @@
         <!-- ROLES -->
         <TextView
             android:id="@+id/txtRoles"
-            android:layout_width="139dp"
-            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_height="31dp"
             android:layout_marginBottom="6dp"
-            android:text="Selecciona tu rol:"
+            android:text="Elige la casa a la que quieres pertenecer"
             android:textColor="#E8D29E"
             android:textSize="14sp"
             android:textStyle="bold" />
@@ -102,26 +102,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:orientation="horizontal">
-
-            <RadioButton
-                android:id="@+id/rbAlumno"
-                android:text="Alumno"
-                android:textColor="#FFFFFF"
-                android:textSize="13sp" />
-
-            <RadioButton
-                android:id="@+id/rbProfesor"
-                android:text="Profesor"
-                android:textColor="#FFFFFF"
-                android:textSize="13sp" />
-
-            <RadioButton
-                android:id="@+id/rbAdmin"
-                android:text="Admin"
-                android:textColor="#FFFFFF"
-                android:textSize="13sp" />
-        </RadioGroup>
+            android:orientation="horizontal"/>
 
         <!-- PREFERENCIAS -->
         <TextView
@@ -236,9 +217,9 @@
             android:layout_width="436dp"
             android:layout_height="55dp"
             android:backgroundTint="@color/caja"
+            android:textColor="#FFEB3B"
             android:padding="10dp"
             android:text="Enviar al Sombrero"
-            android:textColor="#FFEB3B"
             android:textSize="15sp"
             android:textStyle="bold" />
     </LinearLayout>

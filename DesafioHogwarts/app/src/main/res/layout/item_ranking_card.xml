@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/rootItemRanking"
     android:layout_width="match_parent"
@@ -6,19 +7,21 @@
     android:orientation="horizontal"
     android:padding="12dp"
     android:minHeight="56dp"
-    android:gravity="center_vertical">
+    android:gravity="center_vertical"
+    >
 
     <!-- Posición -->
+
+    <!-- Nombre y subtexto -->
     <TextView
         android:id="@+id/txtPosicion"
         android:layout_width="44dp"
         android:layout_height="wrap_content"
+        android:gravity="center"
         android:text="#1"
         android:textSize="16sp"
-        android:textStyle="bold"
-        android:gravity="center" />
+        android:textStyle="bold" />
 
-    <!-- Nombre y subtexto -->
     <LinearLayout
         android:layout_width="0dp"
         android:layout_weight="1"
@@ -33,14 +36,16 @@
             android:layout_height="wrap_content"
             android:text="Gryffindor"
             android:textSize="16sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:textColor="#3A2E16" />
 
         <TextView
             android:id="@+id/txtNumAlumnos"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Alumnos: 23"
-            android:textSize="12sp" />
+            android:textSize="12sp"
+            android:textColor="#5C4F34" />
     </LinearLayout>
 
     <!-- Puntos -->
@@ -50,5 +55,6 @@
         android:layout_height="wrap_content"
         android:text="340 pts"
         android:textSize="14sp"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:textColor="#2B261C"/>
 </LinearLayout>

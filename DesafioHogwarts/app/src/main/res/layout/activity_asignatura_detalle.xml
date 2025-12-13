@@ -4,6 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:background="@drawable/img_1"
     android:layout_height="match_parent">
 
     <TextView
@@ -12,6 +13,7 @@
         android:layout_height="wrap_content"
         android:padding="20dp"
         android:layout_marginTop="40dp"
+        android:textColor="@color/white"
         android:text="Asignatura"
         android:textSize="20sp"
         app:layout_constraintTop_toTopOf="parent"
@@ -24,6 +26,8 @@
         android:layout_height="47dp"
         android:layout_margin="8dp"
         android:layout_marginTop="12dp"
+        android:backgroundTint="@color/caja"
+        android:textColor="#FFEB3B"
         android:text="AGREGAR ALUMNO"
         android:textSize="13sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -47,6 +51,8 @@
         android:layout_height="47dp"
         android:layout_marginTop="12dp"
         android:layout_marginStart="8dp"
+        android:backgroundTint="@color/caja"
+        android:textColor="#FFEB3B"
         android:text="VOLVER"
         android:textSize="13sp"
         app:layout_constraintTop_toBottomOf="@id/tvAsignaturaTitle"
